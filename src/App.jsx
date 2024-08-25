@@ -42,10 +42,10 @@ function App() {
         <>
             <section className='mt-list-section'>
                 {/* Renderizar una lista de componentes List, uno por cada elemento en appData.lists */}
-                {appData.lists.map((list) => (
+                {appData.lists.map((list, index) => (
                     <React.Fragment key={list.id}>
                         <List
-                            listIndex={list.name} 
+                            listIndex={index} 
                             listName={list.name}
                             listId={list.id}
                             initialHandleUpdateLocalStorage={handleUpdateLocalStorage} // Pasar la función para actualizar localStorage

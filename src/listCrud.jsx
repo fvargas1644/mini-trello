@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { arrayMoveImmutable } from 'array-move';
+
 async function listCrud(action) {
     let state = JSON.parse(localStorage.getItem('appData'));
 
@@ -12,6 +14,12 @@ async function listCrud(action) {
                     { id: uuidv4(), name: action.newListName, isVisible: true, tasks: [] }
                 ]
             }     
+        // Reorganiza las listas según el drag-and-drop
+        case 'MOVE_LIST':
+            console.log("Llegamos")
+            return {
+                lists: arrayMoveImmutable(state.lists, action.fromIndex, action.toIndex)
+            }
         default:
             return state;
     }

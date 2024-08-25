@@ -26,11 +26,9 @@ function AddList (props) {
     const handleAddList = async () => {
         if(newListInputValue !== ''){
             
-            //localStorage.setItem('appData', JSON.stringify(initialAppData))
-            console.log(newListInputValue)
-            let a = await listCrud({type: 'CREATE_LIST', newListName: newListInputValue})
+            let data = await listCrud({type: 'CREATE_LIST', newListName: newListInputValue})
 
-            props.initialHandleUpdateLocalStorage(a)
+            props.initialHandleUpdateLocalStorage(data)
         
             await setNewListInputValue('')
 
