@@ -8,13 +8,14 @@ import './styles/App.css';
 function App() {
 
     // Estado para almacenar los datos de la aplicación
-    const [appData, setAppData] = useState(initialAppData); 
+    const [appData, setAppData] = useState(initialAppData);
 
     // Estado para manejar actualizaciones que deben reflejarse en el localStorage
     const [updateLocalStorage, setUpdateLocalStorage] = useState(null);
 
     // useEffect para cargar datos iniciales al montar el componente
     useEffect(() => {
+        
         // Verificar si el localStorage tiene datos almacenados
         if (localStorage.getItem('appData') === null) {
             // Si no hay datos, se almacenan los datos por defecto
@@ -41,17 +42,10 @@ function App() {
     return (
         <>
             <section className='mt-list-section'>
-                {/* Renderizar una lista de componentes List, uno por cada elemento en appData.lists */}
-                {appData.lists.map((list, index) => (
-                    <React.Fragment key={list.id}>
-                        <List
-                            listIndex={index} 
-                            listName={list.name}
-                            listId={list.id}
-                            initialHandleUpdateLocalStorage={handleUpdateLocalStorage} // Pasar la función para actualizar localStorage
-                        />
-                    </React.Fragment>
-                ))}
+                <List
+                    appData={appData}
+                    initialHandleUpdateLocalStorage={handleUpdateLocalStorage} // Pasar la función para actualizar localStorage
+                />
                 {/* Renderizar el componente AddList para añadir nuevas listas */}
                 <AddList initialHandleUpdateLocalStorage={handleUpdateLocalStorage} />
             </section>

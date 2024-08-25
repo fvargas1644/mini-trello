@@ -20,6 +20,12 @@ async function listCrud(action) {
             return {
                 lists: arrayMoveImmutable(state.lists, action.fromIndex, action.toIndex)
             }
+        case 'CHANGE_LIST_NAME':
+            return {
+                lists: 
+                    state.lists.map(list => list.id === action.id ? 
+                    { ...list, name: action.name } : list)
+                }
         default:
             return state;
     }
