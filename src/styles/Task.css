@@ -1,0 +1,20 @@
+.mt-task-section{
+    padding: 12px;
+}
+
+.mt-task-container {
+    padding: 10px;
+    background-color: red;
+}
+
+.mt-task-container:hover {
+    cursor:grab;
+}
+
+.mt-task-container:active {
+    cursor:grabbing;
+}
+
+#Drag {
+    position: absolute;
+}

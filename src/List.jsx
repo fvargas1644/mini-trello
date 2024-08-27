@@ -2,6 +2,7 @@ import './styles/list.css'
 import React, { useState, useRef } from 'react'
 import listCrud from './listCrud.jsx'
 import ListTitle from './ListTitle.jsx';
+import Task from './Task.jsx';
 
 function List(props) {
 
@@ -89,6 +90,9 @@ function List(props) {
                                 X
                             </button>
                         </header>
+                        <Task 
+                            tasks={list.tasks} 
+                        />
 
                     </article>
                     </React.Fragment>
