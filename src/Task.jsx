@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import './styles/Task.css'
 import taskCrud from "./taskCrud.jsx";
+import AddTask from "./AddTask.jsx";
 
 function Task(props) {
 
@@ -10,7 +11,6 @@ function Task(props) {
     async function handleTaskDragStart(event, index) {
 
         let clone = event.target.cloneNode(true)
-        console.log(clone)
 
         clone.id = "Drag"
 
@@ -20,6 +20,12 @@ function Task(props) {
     
         // Permite el movimiento
         event.dataTransfer.effectAllowed = 'move';
+
+        // Usa ese elemeto para crear la imagen arrastrable
+        event.dataTransfer.setDragImage(clone, 120, 10)
+
+        // Reduce la opacidad del elemento container de list
+        event.target.style.opacity = "0.08";
     
 
         // Actualiza el estado local con el índice de la tarea arrastrada
@@ -43,9 +49,9 @@ function Task(props) {
     const handleTaskDrop = (event) => {
         
         event.preventDefault(); // Necesario para permitir el drop
+        setDraggedTaskIndex(null);// Resetea el estado del ítem arrastrado
 
-        // Resetea el estado del ítem arrastrado
-        setDraggedTaskIndex(null);
+        event.target.style.opacity = "1";
         
        
     }
@@ -70,8 +76,10 @@ function Task(props) {
                     </div>
                 </React.Fragment>
             ))}
-            <div>
-            </div>
+            <AddTask 
+                listId={props.listId}
+                initialHandleUpdateLocalStorage={props.initialHandleUpdateLocalStorage}
+            />
         </section>
     )
 }

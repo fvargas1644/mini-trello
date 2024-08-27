@@ -22,7 +22,7 @@ function List(props) {
 
         // Reduce la opacidad del elemento container de list
         listContainer.style.opacity = "0.08";
-        console.log(index)
+        
         // Actualiza el estado local con el índice de la lista arrastrada
         setDraggedListIndex(index);
 

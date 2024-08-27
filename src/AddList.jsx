@@ -28,10 +28,9 @@ function AddList (props) {
             
             let data = await listCrud({type: 'CREATE_LIST', newListName: newListInputValue})
 
-            props.initialHandleUpdateLocalStorage(data)
-        
             await setNewListInputValue('')
 
+            await props.initialHandleUpdateLocalStorage(data)
         }
     };
 
