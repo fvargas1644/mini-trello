@@ -92,6 +92,9 @@ function List(props) {
                         </header>
                         <Task 
                             tasks={list.tasks} 
+                            listId={list.id}
+                            listIndex={index}
+                            initialHandleUpdateLocalStorage={props.initialHandleUpdateLocalStorage}
                         />
 
                     </article>
