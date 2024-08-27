@@ -23,9 +23,17 @@ async function listCrud(action) {
         case 'CHANGE_LIST_NAME':
             return {
                 lists: 
-                    state.lists.map(list => list.id === action.id ? 
-                    { ...list, name: action.name } : list)
+                    state.lists.map(
+                        list => list.id === action.id ? { ...list, name: action.name } : list
+                    )
                 }
+        // Alterna la visibilidad de una lista (la oculta)
+        case 'TOGGLE_LIST_VISIBILITY':
+            return {
+                lists: state.lists.map(
+                    list => list.id === action.id ? { ...list, isVisible: !list.isVisible } : list
+                )
+            };
         default:
             return state;
     }

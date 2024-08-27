@@ -41,23 +41,42 @@ function List(props) {
             setDraggedListIndex(targetIndex);
         }
     };
-    const handleListDrop = (event) => props.initialHandleListDrop(event)
-    const handleListAnimationEnd = (event, listId) => props.initialHandleListAnimationEnd(event, listId)
+    const handleListDrop = (event) => {
+        event.preventDefault(); // Necesario para permitir el drop
+
+        // Restaura la opacidad del elemento container de list
+        event.target.closest('.mt-list-container').style.opacity = "1";
+
+        // Resetea el estado del ítem arrastrado
+        setDraggedListIndex(null);
+    }
+
+    const handleListAnimationEnd = async (event, listId) => {
+        // Despacha la acción de ocultar la lista si la animación es de ocultar
+        if (event.animationName === 'list-fade-out') {
+            let data = await listCrud({ type: 'TOGGLE_LIST_VISIBILITY', id: listId });
+            props.initialHandleUpdateLocalStorage(data)
+        }
+    }
 
 
     return (
         <>
             {props.appData.lists.map((list, index) => (
-                <React.Fragment key={list.id}>
-                    <article className='mt-list-container'>
+                list.isVisible && (
+                    <React.Fragment key={list.id}>
+                    <article 
+                        className='mt-list-container'
+                        onAnimationEnd={(event) => handleListAnimationEnd(event, list.id)} // Maneja el fin de la animación
+                    >
                         <header
                             className="mt-list-header" // Clase del contenedor principal
                             draggable // Habilita el arrastrar en el contenedor
                             onDragStart={(event) => handleListDragStart(event, index)} // Maneja el inicio del arrastre
                             onDragOver={(event) => handleListDragOver(event, index)} // Maneja el arrastre sobre el contenedor
-                            //onDrop={handleListDrop} // Maneja el evento de soltar
-                            //onDragEnd={handleListDrop} // Maneja el evento de fin del arrastre
-                            //onAnimationEnd={(event) => handleListAnimationEnd(event, props.listId)} // Maneja el fin de la animación
+                            onDrop={handleListDrop} // Maneja el evento de soltar
+                            onDragEnd={handleListDrop} // Maneja el evento de fin del arrastre
+                            onAnimationEnd={(event) => handleListAnimationEnd(event, list.id)} 
                         >
                             <ListTitle
                                 listName={list.name}
@@ -72,7 +91,9 @@ function List(props) {
                         </header>
 
                     </article>
-                </React.Fragment>
+                    </React.Fragment>
+                )
+                
             ))}
         </>
     )
