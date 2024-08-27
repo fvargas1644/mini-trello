@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import './styles/Task.css'
+import taskCrud from "./taskCrud.jsx";
 
 function Task(props) {
     return (
