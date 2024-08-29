@@ -1,9 +1,12 @@
 import './styles/App.css'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import listCrud from './listCrud.jsx' 
-//import initialAppData from './data/initialAppData.jsx';
+import {AppDataContext} from './AppContext.jsx'
 
 function AddList (props) {
+
+    const { appData, setAppData } = useContext(AppDataContext);
+
     // Estado local para manejar la visibilidad de la sección de agregar lista
     const [isAddListVisible, setIsAddListVisible] = useState(false);
 
@@ -26,11 +29,11 @@ function AddList (props) {
     const handleAddList = async () => {
         if(newListInputValue !== ''){
             
-            let data = await listCrud({type: 'CREATE_LIST', newListName: newListInputValue})
+            let data = await listCrud(appData, {type: 'CREATE_LIST', newListName: newListInputValue})
 
             await setNewListInputValue('')
 
-            await props.initialHandleUpdateLocalStorage(data)
+            setAppData(data)
         }
     };
 

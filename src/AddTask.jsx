@@ -13,10 +13,8 @@ function AddTask(props) {
             let data = await taskCrud({type: 'CREATE_TASK', listId: props.listId, newTaskName:  newTaskInputValue})
 
             await setNewTaskInputValue('')
-            console.log(data)
             props.initialHandleUpdateLocalStorage(data)
-
-            
+ 
         }
     }
 

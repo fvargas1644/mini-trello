@@ -1,10 +1,13 @@
 import './styles/list.css'
-import React, { useState, useRef } from 'react'
+import React, { useState, useContext } from 'react'
 import listCrud from './listCrud.jsx'
 import ListTitle from './ListTitle.jsx';
 import Task from './Task.jsx';
+import {AppDataContext} from './AppContext.jsx'
 
 function List(props) {
+
+    const { appData, setAppData } = useContext(AppDataContext);
 
     // Estado local para manejar el índice del ítem que se está arrastrando
     const [draggedListIndex, setDraggedListIndex] = useState(null);
@@ -22,7 +25,7 @@ function List(props) {
 
         // Reduce la opacidad del elemento container de list
         listContainer.style.opacity = "0.08";
-        
+
         // Actualiza el estado local con el índice de la lista arrastrada
         setDraggedListIndex(index);
 
@@ -36,8 +39,8 @@ function List(props) {
 
         // Si hay un ítem arrastrado y se está pasando sobre una lista diferente
         if (draggedListIndex !== null && targetIndex !== draggedListIndex) {
-            let data = await listCrud({ type: 'MOVE_LIST', fromIndex: draggedListIndex, toIndex: targetIndex });
-            props.initialHandleUpdateLocalStorage(data)
+            let data = await listCrud(appData, { type: 'MOVE_LIST', fromIndex: draggedListIndex, toIndex: targetIndex });
+            setAppData(data)
             // Actualiza el índice de la lista arrastrada
             setDraggedListIndex(targetIndex);
         }
@@ -55,15 +58,15 @@ function List(props) {
     const handleListAnimationEnd = async (event, listId) => {
         // Despacha la acción de ocultar la lista si la animación es de ocultar
         if (event.animationName === 'list-fade-out') {
-            let data = await listCrud({ type: 'TOGGLE_LIST_VISIBILITY', id: listId });
-            props.initialHandleUpdateLocalStorage(data)
+            let data = await listCrud(appData, { type: 'TOGGLE_LIST_VISIBILITY', id: listId });
+            setAppData(data)
         }
     }
 
 
     return (
         <>
-            {props.appData.lists.map((list, index) => (
+            {appData.lists.map((list, index) => (
                 list.isVisible && (
                     <React.Fragment key={list.id}>
                     <article 
@@ -82,7 +85,6 @@ function List(props) {
                             <ListTitle
                                 listName={list.name}
                                 listId={list.id}
-                                initialHandleUpdateLocalStorage={props.initialHandleUpdateLocalStorage}
                             />
                             <button
                                 onClick={hideList} // Maneja el clic en el botón para ocultar la lista
@@ -94,7 +96,6 @@ function List(props) {
                             tasks={list.tasks} 
                             listId={list.id}
                             listIndex={index}
-                            initialHandleUpdateLocalStorage={props.initialHandleUpdateLocalStorage}
                         />
 
                     </article>
