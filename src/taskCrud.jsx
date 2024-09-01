@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { arrayMoveImmutable } from 'array-move';
-import Task from './Task';
 
 async function taskCrud(state, action) {
 

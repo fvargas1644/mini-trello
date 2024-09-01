@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect} from "react"
 import './styles/Task.css'
 import taskCrud from "./taskCrud.jsx";
 import AddTask from "./AddTask.jsx";
-import {AppDataContext, TaskDragDataContext} from './AppContext.jsx'
+import {AppDataContext, DragDataContext} from './AppContext.jsx'
 
 function Task(props) {
 
@@ -16,7 +16,7 @@ function Task(props) {
         setDragTaskData, 
         draggedTask, 
         setDraggedTask
-    } = useContext(TaskDragDataContext);
+    } = useContext(DragDataContext);
 
 
     useEffect(()=>{
@@ -35,6 +35,7 @@ function Task(props) {
     const handleTaskDragStart = async (event, index, task) => {
 
         let cloneTask = document.getElementById("Drag")
+
         if(cloneTask !== null) {
             await document.body.removeChild(cloneTask)
         }
@@ -43,6 +44,7 @@ function Task(props) {
         clone.id = "Drag"
         setDragTaskData({fromListId: props.listId, fromListIndex: props.listIndex, task})
         document.body.appendChild(clone)
+
     
         // Permite el movimiento
         event.dataTransfer.effectAllowed = 'move';
@@ -60,7 +62,6 @@ function Task(props) {
 
     const handleTaskDragOver = async (event, targetIndex) => {
         
-        event.preventDefault(); // Necesario para permitir el drop
 
         // Si hay un ítem arrastrado y se está pasando sobre una lista diferente
         if (draggedTaskIndex !== null && targetIndex !== draggedTaskIndex) {
@@ -81,6 +82,10 @@ function Task(props) {
     }
 
     const handleTaskDrop = async (event) => {
+
+        
+
+        console.log("termi")
         
         event.preventDefault(); // Necesario para permitir el drop
 
@@ -95,48 +100,12 @@ function Task(props) {
         
        
     }
-
-    const handleTaskDropOverOtherList= async (event) => {
-        event.preventDefault(); // Necesario para permitir el drop
-        if(draggedTask){
-            if(props.listId !== dragTaskData.fromListId ){
-                
-                let data = await taskCrud(
-                    appData,
-                    { 
-                        type: 'TASK_TO_ANOTHER_LIST', 
-                        fromListIndex: dragTaskData.fromListIndex, 
-                        task: dragTaskData.task,
-                        toListId: props.listId
-                    }
-                )
-                await setAppData(data)
-                
-                await setDragTaskData({...dragTaskData, fromListId: props.listId, fromListIndex: props.listIndex})
-
-            }  
-        }
-    }
-
-    const handleTaskDropOtherList = async (event) => {
-        
-        event.preventDefault(); // Necesario para permitir el drop
-                
-        if(draggedTask) {
-            let draggedTask = document.getElementById(dragTaskData.task.id)
-            draggedTask.style.opacity = "1";
-        }
-
-        let cloneTask = document.getElementById("Drag")
-        if(cloneTask !== null) {
-            document.body.removeChild(cloneTask)     
-        }
-    } 
-
+    const handleTaskEnd = () => {
+    props.iniHanDragEndTask()}
     return (
         <section className='mt-task-section' 
-        onDragOver={(event)=>handleTaskDropOverOtherList(event)}
-        onDrop={(event)=>handleTaskDropOtherList(event)}
+        //onDragOver={(event)=>handleTaskDropOverOtherList(event)}
+        //onDrop={(event)=>handleTaskDropOtherList(event)}
         id={props.listId}
         >
             {props.tasks.map((task, index)=>(
@@ -147,7 +116,7 @@ function Task(props) {
                         onDragStart={(event) => handleTaskDragStart(event, index, task)} // Maneja el inicio del arrastre
                         onDragOver={(event) => handleTaskDragOver(event, index)} // Maneja el arrastre sobre el contenedor
                         onDrop={handleTaskDrop} // Maneja el evento de soltar
-                        onDragEnd={handleTaskDrop} // Maneja el evento de fin del arrastre
+                        onDragEnd={handleTaskEnd} // Maneja el evento de fin del arrastre
                         id={task.id}
                     >
                         {task.name}

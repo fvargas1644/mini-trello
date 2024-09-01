@@ -3,16 +3,19 @@ import initialAppData from './data/initialAppData.jsx';
 import List from './List.jsx';
 import AddList from './AddList.jsx';
 import './styles/App.css';
-import {AppDataContext, TaskDragDataContext} from './AppContext.jsx';
+import { AppDataContext, DragDataContext } from './AppContext.jsx';
 
 // Componente principal de la aplicación
 function App() {
-    
+
     // Estado para almacenar los datos de la aplicación
     const [appData, setAppData] = useState(initialAppData);
 
     // Estado para manejar actualizaciones que deben reflejarse en el localStorage
     const [updateLocalStorage, setUpdateLocalStorage] = useState(false);
+
+    // Estado local para manejar el índice del ítem que se está arrastrando
+    const [draggedListIndex, setDraggedListIndex] = useState(null);
 
     // Estado local para manejar el índice del ítem que se está arrastrando
     const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
@@ -23,6 +26,8 @@ function App() {
     // Estado local para manejar el índice del ítem que se está arrastrando
     const [draggedTask, setDraggedTask] = useState(false);
 
+    const [dragItemType, setDragItemType] = useState(null)
+
     // useEffect para cargar datos iniciales al montar el componente
     useEffect(() => {
 
@@ -32,7 +37,7 @@ function App() {
             localStorage.setItem('appData', JSON.stringify(initialAppData));
         } else {
             // Si hay datos en el localStorage, se cargan en el estado de la aplicación
-            setAppData(JSON.parse(localStorage.getItem('appData')));
+            setAppData(initialAppData);
         }
     }, []);
 
@@ -51,21 +56,26 @@ function App() {
 
             <section className='mt-list-section'>
                 { /* Contexto de la APP*/}
-                <AppDataContext.Provider value={{ appData, setAppData}}>
+                <AppDataContext.Provider value={{ appData, setAppData }}>
                     { /* Contexto de las funciones de arrastre en las tareas*/}
-                    <TaskDragDataContext.Provider value={{
+
+                    <DragDataContext.Provider value={{
                         draggedTaskIndex,
-                        setDraggedTaskIndex, 
-                        dragTaskData, 
-                        setDragTaskData, 
-                        draggedTask, 
-                        setDraggedTask 
+                        setDraggedTaskIndex,
+                        dragTaskData,
+                        setDragTaskData,
+                        draggedTask,
+                        setDraggedTask,
+                        draggedListIndex,
+                        setDraggedListIndex,
+                        dragItemType,
+                        setDragItemType
                     }}>
                         {/* Renderizar el componente las Listas */}
-                        <List/>
+                        <List />
                         {/* Renderizar el componente AddList para añadir nuevas listas */}
-                        <AddList/>
-                    </TaskDragDataContext.Provider>
+                        <AddList />
+                    </DragDataContext.Provider>
                 </AppDataContext.Provider>
             </section>
         </>
