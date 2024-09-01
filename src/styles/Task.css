@@ -15,6 +15,10 @@
     cursor:grabbing;
 }
 
+.mt-task-container.is-dragging{
+    opacity: 0.8;
+}
+
 #Drag {
     position: absolute;
 }

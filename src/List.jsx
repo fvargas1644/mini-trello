@@ -46,6 +46,7 @@ function List(props) {
         }
     };
     const handleListDrop = (event) => {
+        //console.log("Auí")
         event.preventDefault(); // Necesario para permitir el drop
 
         // Restaura la opacidad del elemento container de list

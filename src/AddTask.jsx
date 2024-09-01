@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import taskCrud from "./taskCrud"
+import {AppDataContext} from './AppContext.jsx'
 
 function AddTask(props) {
+
+    const { appData, setAppData } = useContext(AppDataContext);
 
     const [newTaskInputValue, setNewTaskInputValue] = useState('')
 
@@ -10,10 +13,10 @@ function AddTask(props) {
     const handleAddTask = async () => {
         if (newTaskInputValue !== ''){
             
-            let data = await taskCrud({type: 'CREATE_TASK', listId: props.listId, newTaskName:  newTaskInputValue})
+            let data = await taskCrud(appData, {type: 'CREATE_TASK', listId: props.listId, newTaskName:  newTaskInputValue})
 
             await setNewTaskInputValue('')
-            props.initialHandleUpdateLocalStorage(data)
+            setAppData(data)
  
         }
     }

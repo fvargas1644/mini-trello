@@ -3,7 +3,7 @@ import initialAppData from './data/initialAppData.jsx';
 import List from './List.jsx';
 import AddList from './AddList.jsx';
 import './styles/App.css';
-import {AppDataContext} from './AppContext.jsx';
+import {AppDataContext, TaskDragDataContext} from './AppContext.jsx';
 
 // Componente principal de la aplicación
 function App() {
@@ -13,6 +13,15 @@ function App() {
 
     // Estado para manejar actualizaciones que deben reflejarse en el localStorage
     const [updateLocalStorage, setUpdateLocalStorage] = useState(false);
+
+    // Estado local para manejar el índice del ítem que se está arrastrando
+    const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
+
+    // Estado local para manejar el índice del ítem que se está arrastrando
+    const [dragTaskData, setDragTaskData] = useState(undefined);
+
+    // Estado local para manejar el índice del ítem que se está arrastrando
+    const [draggedTask, setDraggedTask] = useState(false);
 
     // useEffect para cargar datos iniciales al montar el componente
     useEffect(() => {
@@ -35,18 +44,28 @@ function App() {
         } else {
             setUpdateLocalStorage(true)
         }
-        
-
     }, [appData]);
 
     return (
         <>
 
             <section className='mt-list-section'>
-                <AppDataContext.Provider value={{ appData, setAppData }}>
-                    <List/>
-                    {/* Renderizar el componente AddList para añadir nuevas listas */}
-                    <AddList/>
+                { /* Contexto de la APP*/}
+                <AppDataContext.Provider value={{ appData, setAppData}}>
+                    { /* Contexto de las funciones de arrastre en las tareas*/}
+                    <TaskDragDataContext.Provider value={{
+                        draggedTaskIndex,
+                        setDraggedTaskIndex, 
+                        dragTaskData, 
+                        setDragTaskData, 
+                        draggedTask, 
+                        setDraggedTask 
+                    }}>
+                        {/* Renderizar el componente las Listas */}
+                        <List/>
+                        {/* Renderizar el componente AddList para añadir nuevas listas */}
+                        <AddList/>
+                    </TaskDragDataContext.Provider>
                 </AppDataContext.Provider>
             </section>
         </>

@@ -1,54 +1,88 @@
-import React, { useState } from "react"
+import React, { useState, useContext, useEffect} from "react"
 import './styles/Task.css'
 import taskCrud from "./taskCrud.jsx";
 import AddTask from "./AddTask.jsx";
+import {AppDataContext, TaskDragDataContext} from './AppContext.jsx'
 
 function Task(props) {
 
+    const  {appData, setAppData } = useContext(AppDataContext);
 
     // Estado local para manejar el índice del ítem que se está arrastrando
-    const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
+    const {
+        draggedTaskIndex,
+        setDraggedTaskIndex, 
+        dragTaskData, 
+        setDragTaskData, 
+        draggedTask, 
+        setDraggedTask
+    } = useContext(TaskDragDataContext);
 
-    const handleTaskDragStart = (event, index, task) => {
+
+    useEffect(()=>{
+        if(dragTaskData !== undefined){
+            if(draggedTask){
+                let task = document.getElementById(dragTaskData.task.id)
+                task.style.opacity = "0.08";
+            } else {
+                let task = document.getElementById(dragTaskData.task.id)
+                task.style.opacity = "1";
+            }
+        }
+        
+    }, [draggedTask, dragTaskData])
+
+    const handleTaskDragStart = async (event, index, task) => {
+
+        let cloneTask = document.getElementById("Drag")
+        if(cloneTask !== null) {
+            await document.body.removeChild(cloneTask)
+        }
 
         let clone = event.target.cloneNode(true)
         clone.id = "Drag"
-        clone.data = {fromListId: props.listId, fromListIndex: props.listIndex, task}
+        setDragTaskData({fromListId: props.listId, fromListIndex: props.listIndex, task})
         document.body.appendChild(clone)
     
         // Permite el movimiento
         event.dataTransfer.effectAllowed = 'move';
 
         // Usa ese elemeto para crear la imagen arrastrable
-        event.dataTransfer.setDragImage(clone, 120, 10)
+        event.dataTransfer.setDragImage(clone, 0, 0)
 
         // Reduce la opacidad del elemento container de list
         event.target.style.opacity = "0.08";
     
-
         // Actualiza el estado local con el índice de la tarea arrastrada
         setDraggedTaskIndex(index);
+        setDraggedTask(true)
     }
 
     const handleTaskDragOver = async (event, targetIndex) => {
         
         event.preventDefault(); // Necesario para permitir el drop
 
-        console.log(draggedTaskIndex)
         // Si hay un ítem arrastrado y se está pasando sobre una lista diferente
         if (draggedTaskIndex !== null && targetIndex !== draggedTaskIndex) {
 
-            let data = await taskCrud({type: 'MOVE_TASK', listId: props.listId, fromIndex: draggedTaskIndex, toIndex: targetIndex})
-            await props.initialHandleUpdateLocalStorage(data)
+            let data = await taskCrud(
+                appData, 
+                {
+                    type: 'MOVE_TASK', 
+                    listId: props.listId, 
+                    fromIndex: draggedTaskIndex, 
+                    toIndex: targetIndex
+                })
+
+            await setAppData(data)
             // Actualiza el índice de la lista arrastrada
             setDraggedTaskIndex(targetIndex);
         }
     }
 
-    const handleTaskDrop = (event) => {
+    const handleTaskDrop = async (event) => {
         
         event.preventDefault(); // Necesario para permitir el drop
-        setDraggedTaskIndex(null);// Resetea el estado del ítem arrastrado
 
         event.target.style.opacity = "1";
 
@@ -56,51 +90,55 @@ function Task(props) {
         if(cloneTask !== null) {
             document.body.removeChild(cloneTask)
         }
+
+        setDraggedTaskIndex(null);// Resetea el estado del ítem arrastrado
         
        
     }
 
     const handleTaskDropOverOtherList= async (event) => {
         event.preventDefault(); // Necesario para permitir el drop
+        if(draggedTask){
+            if(props.listId !== dragTaskData.fromListId ){
+                
+                let data = await taskCrud(
+                    appData,
+                    { 
+                        type: 'TASK_TO_ANOTHER_LIST', 
+                        fromListIndex: dragTaskData.fromListIndex, 
+                        task: dragTaskData.task,
+                        toListId: props.listId
+                    }
+                )
+                await setAppData(data)
+                
+                await setDragTaskData({...dragTaskData, fromListId: props.listId, fromListIndex: props.listIndex})
 
-        let cloneTask = document.getElementById("Drag")
-
-        if(cloneTask!== null){
-            if(props.listId !== cloneTask.data.fromListId ){
-                //await setDraggedTaskIndex(0)
-                console.log(cloneTask.data.task)
-                let data = await taskCrud({ 
-                    type: 'TASK_TO_ANOTHER_LIST', 
-                    fromListIndex: cloneTask.data.fromListIndex, 
-                    task: cloneTask.data.task,
-                    toListId: props.listId
-                })
-                await props.initialHandleUpdateLocalStorage(data)
-    
-                cloneTask.data.fromListId =  props.listId 
-                cloneTask.data.fromListIndex =  props.listIndex    
-    
             }  
         }
-         
     }
 
-    const handleTaskDropOtherList = (event) => {
+    const handleTaskDropOtherList = async (event) => {
+        
         event.preventDefault(); // Necesario para permitir el drop
-        setDraggedTaskIndex(null);
+                
+        if(draggedTask) {
+            let draggedTask = document.getElementById(dragTaskData.task.id)
+            draggedTask.style.opacity = "1";
+        }
+
         let cloneTask = document.getElementById("Drag")
         if(cloneTask !== null) {
-            document.body.removeChild(cloneTask)
+            document.body.removeChild(cloneTask)     
         }
-        
-    }
+    } 
 
     return (
         <section className='mt-task-section' 
         onDragOver={(event)=>handleTaskDropOverOtherList(event)}
         onDrop={(event)=>handleTaskDropOtherList(event)}
+        id={props.listId}
         >
-            {props.listIndex}
             {props.tasks.map((task, index)=>(
                 <React.Fragment key={task.id}>
                     <div 
@@ -110,6 +148,7 @@ function Task(props) {
                         onDragOver={(event) => handleTaskDragOver(event, index)} // Maneja el arrastre sobre el contenedor
                         onDrop={handleTaskDrop} // Maneja el evento de soltar
                         onDragEnd={handleTaskDrop} // Maneja el evento de fin del arrastre
+                        id={task.id}
                     >
                         {task.name}
                     </div>
@@ -117,7 +156,6 @@ function Task(props) {
             ))}
             <AddTask 
                 listId={props.listId}
-                initialHandleUpdateLocalStorage={props.initialHandleUpdateLocalStorage}
             />
         </section>
     )

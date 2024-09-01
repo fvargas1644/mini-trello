@@ -24,7 +24,6 @@ async function taskCrud(state, action) {
             };
 
         case 'TASK_TO_ANOTHER_LIST':
-            console.log(action.task.id)
             let indexTaskFromList = state.lists[action.fromListIndex].tasks.findIndex(task => task.id === action.task.id)
 
             if(indexTaskFromList !== -1){
