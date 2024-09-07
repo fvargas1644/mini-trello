@@ -1,0 +1,45 @@
+.mt-addTask-container { /* Contenedor del input y botón para agregar una nueva lista, oculto por defecto */
+    display: flex;
+    padding: 0px;
+    height: 30px;
+}
+
+.mt-addTask-container input{
+    width: 100%;
+    border-radius: 6px 0px 0px 6px;
+    padding: 10px;
+    background-color: rgba(128, 128, 128, 0.4);
+    color: var(--text-color);
+    border: none;
+    outline: none;
+}
+
+.mt-addTask-container input:focus{
+    box-shadow: inset 0 0 0 2px #85B8FF;
+}
+
+.mt-addTask-container input:hover{
+    box-shadow:  inset  0 0 0 2px #85B8FF;
+}
+
+
+.mt-addTask-buttonAdd{
+    width: 26px;
+    background-color: transparent;
+}
+
+.icon{
+    color: white;
+    width: 26px;
+    height: 100%;
+    padding: 3px;
+    border-radius: 0px 6px 6px 0px;
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+.icon:hover{
+    background-color: rgba(128, 128, 128, 0.8); 
+    cursor: pointer;
+    
+}
+

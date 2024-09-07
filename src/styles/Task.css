@@ -1,12 +1,31 @@
 .mt-task-section{
     padding: 12px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
 }
 
 .mt-task-container {
-    padding: 10px;
-    background-color: red;
+    padding: 8px 14px;
+    background-color: #ee5e87; /*1A114F, 3C5A7E, EC4876,  8F7C95*/
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
+.mt-task-container.ghost{
+    opacity: 0.3;
+}
+
+
+/*QUIZAS:
+background-color: #FBFBFA; 
+color: black;
+
+background-color: #EBE294;
+color: black;
+*/
 .mt-task-container:hover {
     cursor:grab;
 }
@@ -19,6 +38,6 @@
     opacity: 0.8;
 }
 
-#Drag {
-    position: absolute;
-}
+
+
+

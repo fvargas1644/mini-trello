@@ -14,19 +14,18 @@ function App() {
     // Estado para manejar actualizaciones que deben reflejarse en el localStorage
     const [updateLocalStorage, setUpdateLocalStorage] = useState(false);
 
-    // Estado local para manejar el índice del ítem que se está arrastrando
-    const [draggedListIndex, setDraggedListIndex] = useState(null);
+    // Estado para indetificar que item se esta arrastrando
+    const [dragItemType, setDragItemType] = useState(null)
 
-    // Estado local para manejar el índice del ítem que se está arrastrando
+    // Estado local para manejar ítem de lista que se está arrastrando
+    const [draggedListIndex, setDraggedListIndex] = useState(null);
+    
+    // Estado local para manejar ítem de tarea que se está arrastrando
+    const [dragTaskData, setDragTaskData] = useState(undefined);
+    const [draggedTask, setDraggedTask] = useState(false);
+    const [activeGhostTask, setActiveGhostTask] = useState({active: false, listId: null, isDropOtherList: false, toListIndex: null})
     const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
 
-    // Estado local para manejar el índice del ítem que se está arrastrando
-    const [dragTaskData, setDragTaskData] = useState(undefined);
-
-    // Estado local para manejar el índice del ítem que se está arrastrando
-    const [draggedTask, setDraggedTask] = useState(false);
-
-    const [dragItemType, setDragItemType] = useState(null)
 
     // useEffect para cargar datos iniciales al montar el componente
     useEffect(() => {
@@ -69,7 +68,9 @@ function App() {
                         draggedListIndex,
                         setDraggedListIndex,
                         dragItemType,
-                        setDragItemType
+                        setDragItemType,
+                        activeGhostTask, 
+                        setActiveGhostTask
                     }}>
                         {/* Renderizar el componente las Listas */}
                         <List />

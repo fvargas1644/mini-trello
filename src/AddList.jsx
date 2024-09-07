@@ -2,8 +2,9 @@ import './styles/App.css'
 import { useState, useContext } from 'react';
 import listCrud from './listCrud.jsx' 
 import {AppDataContext} from './AppContext.jsx'
+import './styles/AddList.css'
 
-function AddList (props) {
+function AddList () {
 
     const { appData, setAppData } = useContext(AppDataContext);
 

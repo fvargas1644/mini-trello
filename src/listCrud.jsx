@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { arrayMoveImmutable } from 'array-move';
 
 async function listCrud(state, action) {
-    //let state = JSON.parse(localStorage.getItem('appData'));
 
     switch(action.type) {
          // Crea una nueva lista si el nombre no está vacío
@@ -19,6 +18,7 @@ async function listCrud(state, action) {
             return {
                 lists: arrayMoveImmutable(state.lists, action.fromIndex, action.toIndex)
             }
+        // Cambia el nombre de la lista
         case 'CHANGE_LIST_NAME':
             return {
                 lists: 

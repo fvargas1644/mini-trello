@@ -1,20 +1,22 @@
 import './styles/list.css'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import listCrud from './listCrud.jsx'
 import ListTitle from './ListTitle.jsx';
 import Task from './Task.jsx';
 import { AppDataContext, DragDataContext } from './AppContext.jsx'
 import ListCard from './ListCard.jsx';
 
-function List(props) {
+function List() {
 
     const { appData } = useContext(AppDataContext);
 
     // Estado local para manejar el índice del ítem que se está arrastrando
-    const { setDraggedListIndex, setDragItemType } = useContext(DragDataContext);
+    const { setDraggedListIndex, setDragItemType} = useContext(DragDataContext);
 
     // Función para ocultar la lista, llama a la función proporcionada a través de props
     const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hidden');
+
+   
 
     // Maneja el inicio del arrastre de una lista
     const handleListDragStart = (event, index) => {
@@ -37,8 +39,6 @@ function List(props) {
 
 
     const handleListDragEnd = (event) => {
-        //console.log("Auí")
-        console.log("R")
         event.preventDefault(); // Necesario para permitir el drop
 
         // Restaura la opacidad del elemento container de list
@@ -46,11 +46,7 @@ function List(props) {
 
         // Resetea el estado del ítem arrastrado
         setDraggedListIndex(null);
-        //setDragItemType(null)
-    }
-
-    const iniHanDragEndTask = ()=> {
-        console.log("Termina")
+        setDragItemType(null)
     }
 
     return (
@@ -61,15 +57,13 @@ function List(props) {
                         <ListCard
                             listId={list.id}
                             listIndex={index}
+                            tasks={list.tasks}
                         >
                             <header
                                 className="mt-list-header" // Clase del contenedor principal
                                 draggable // Habilita el arrastrar en el contenedor
                                 onDragStart={(event) => handleListDragStart(event, index)} // Maneja el inicio del arrastre
-                                //onDragOver={(event) => handleListDragOver(event, index)} // Maneja el arrastre sobre el contenedor
-                                //onDrop={handleListDrop} // Maneja el evento de soltar
                                 onDragEnd={handleListDragEnd} // Maneja el evento de fin del arrastre
-                                //onAnimationEnd={(event) => handleListAnimationEnd(event, list.id)}
                             >
                                 <ListTitle
                                     listName={list.name}
@@ -85,9 +79,7 @@ function List(props) {
                                 tasks={list.tasks}
                                 listId={list.id}
                                 listIndex={index}
-                                iniHanDragEndTask={iniHanDragEndTask}
                             />
-
                         </ListCard>
 
                     </React.Fragment>

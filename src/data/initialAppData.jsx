@@ -13,7 +13,10 @@ const initialAppData = {
         "id": "123e4567-e89b-12d3-a456-426614174003",
         "name": "Lista 2 hacer ejercicio 6  al día",
         "isVisible": true,
-        "tasks": []
+        "tasks": [
+          { "id": "567e4567-e89b-12d3-a456-426614174192", "name": "Correr 30 minutos", "isVisible": true },
+          { "id": "127e4567-e89b-12d3-a456-426614174129", "name": "Hacer 100 lagartijas", "isVisible": true }
+        ]
       },
       {
         "id": "123e4567-e89b-12d3-a456-426614174004",
@@ -23,7 +26,7 @@ const initialAppData = {
       },
       {
         "id": "123e4567-e89b-12d3-a456-426614174005",
-        "name": "Lista 4 Pero si hacemos un texto   quizás estemos dando por alto ciertas cosas importantes",
+        "name": "Lista 4 Pero si hacemos un texto quizás estemos dando por alto ciertas cosas importantes",
         "isVisible": true,
         "tasks": []
       },
