@@ -1,8 +1,8 @@
-import './styles/App.css';
+import '../styles/App.css';
 import { useState, useContext } from 'react';
-import listCrud from './listCrud.jsx'; 
-import { AppDataContext } from './AppContext.jsx';
-import './styles/AddList.css'; 
+import listCrud from '../reducers/listCrud.jsx'; 
+import { AppDataContext } from '../context/AppContext.jsx';
+import '../styles/AddList.css'; 
 
 function AddList() {
     // Desestructuración del contexto para obtener y actualizar los datos de la aplicación

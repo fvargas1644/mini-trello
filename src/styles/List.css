@@ -77,7 +77,7 @@
 }
 
 /*ANIMACIONES*/
-.hide{
+.hideList{
     animation: list-fade-out .5s forwards;
 }
 

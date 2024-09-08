@@ -133,7 +133,7 @@ color: black;
 }
 
 /*ANIMACIONES*/
-.hide{
+.hideTask{
     animation: task-fade-out .5s forwards;
 }
 

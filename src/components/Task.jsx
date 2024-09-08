@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import AddTask from "./AddTask.jsx";
-import './styles/Task.css';
-import taskCrud from "./taskCrud.jsx";
-import { AppDataContext, DragDataContext } from './AppContext.jsx';
+import '../styles/Task.css';
+import taskCrud from "../reducers/taskCrud.jsx";
+import { AppDataContext, DragDataContext } from '../context/AppContext.jsx';
 import TaskOptions from "./TaskOptions.jsx";
 
 // Componente que representa una tarea visible en la interfaz

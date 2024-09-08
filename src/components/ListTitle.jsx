@@ -1,6 +1,6 @@
 import { useRef, useState, useContext } from "react";
-import listCrud from "./listCrud";
-import { AppDataContext } from './AppContext.jsx';
+import listCrud from "../reducers/listCrud.jsx";
+import { AppDataContext } from '../context/AppContext.jsx';
 
 function ListTitle({ listName, listId }) {
 
@@ -39,7 +39,7 @@ function ListTitle({ listName, listId }) {
     // Función para alternar la visibilidad del campo de entrada del nombre de la lista
     async function toggleListNameInput() {
         if (!listNameInputVisible) {
-            setListNameInputVisible(true); // Muestra el campo de entrada
+            await setListNameInputVisible(true); // Muestra el campo de entrada
             listNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para edición
         }
     }

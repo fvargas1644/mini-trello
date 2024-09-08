@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import initialAppData from './data/initialAppData.jsx';
-import List from './List.jsx';
-import AddList from './AddList.jsx';
+import List from './components/List.jsx';
+import AddList from './components/AddList.jsx';
 import './styles/App.css';
-import { AppDataContext, DragDataContext } from './AppContext.jsx';
+import { AppDataContext, DragDataContext } from './context/AppContext.jsx';
 
 // Componente principal de la aplicación
 function App() {
@@ -11,32 +11,31 @@ function App() {
     // Estado para almacenar los datos de la aplicación
     const [appData, setAppData] = useState(initialAppData);
 
-    // Estado para manejar la bandera de actualización del localStorage
+    // Estado para manejar actualizaciones que deben reflejarse en el localStorage
     const [updateLocalStorage, setUpdateLocalStorage] = useState(false);
 
-    // Estado para identificar el tipo de ítem que se está arrastrando (tarea o lista)
-    const [dragItemType, setDragItemType] = useState(null);
+    // Estado para indetificar que item se esta arrastrando
+    const [dragItemType, setDragItemType] = useState(null)
 
-    // Estado local para manejar el índice de la lista que se está arrastrando
+    // Estado local para manejar ítem de lista que se está arrastrando
     const [draggedListIndex, setDraggedListIndex] = useState(null);
     
-    // Estado local para manejar los datos de la tarea que se está arrastrando
+    // Estado local para manejar ítem de tarea que se está arrastrando
     const [dragTaskData, setDragTaskData] = useState(undefined);
-    // Estado para verificar si se está arrastrando una tarea
     const [draggedTask, setDraggedTask] = useState(false);
-    // Estado para manejar el estado del "fantasma" de la tarea durante el arrastre
-    const [activeGhostTask, setActiveGhostTask] = useState({active: false, listId: null, isDropOtherList: false});
-    // Estado para manejar el índice de la tarea que se está arrastrando
+    const [activeGhostTask, setActiveGhostTask] = useState({active: false, listId: null, isDropOtherList: false})
     const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
+
 
     // useEffect para cargar datos iniciales al montar el componente
     useEffect(() => {
-        // Verificar si hay datos almacenados en el localStorage
+
+        // Verificar si el localStorage tiene datos almacenados
         if (localStorage.getItem('appData') === null) {
-            // Si no hay datos, almacenar los datos iniciales en el localStorage
+            // Si no hay datos, se almacenan los datos por defecto
             localStorage.setItem('appData', JSON.stringify(initialAppData));
         } else {
-            // Si hay datos, cargarlos en el estado de la aplicación
+            // Si hay datos en el localStorage, se cargan en el estado de la aplicación
             setAppData(JSON.parse(localStorage.getItem('appData')));
         }
     }, []);
@@ -44,21 +43,33 @@ function App() {
     // useEffect para actualizar el localStorage cuando cambia appData
     useEffect(() => {
         if (updateLocalStorage) {
-            // Actualizar el localStorage con los datos actuales de appData
+            // Actualiza el localStorage
             localStorage.setItem('appData', JSON.stringify(appData));
         } else {
-            // Si no se debe actualizar el localStorage aún, activar la bandera
-            setUpdateLocalStorage(true);
+            setUpdateLocalStorage(true)
         }
     }, [appData]);
 
+    const handleResetData = () => setAppData(initialAppData)
+
     return (
         <>
-
+            <div className='mt-title'>
+                <h1>Mini Trello - Drag and Drop</h1>
+                <span>Fernando Vargas </span>
+                <button 
+                    onClick={handleResetData}
+                    className='mt-button-ResetData'
+                >
+                    Restablecer Datos
+                </button>
+                
+            </div>
             <section className='mt-list-section'>
-                {/* Contexto de la aplicación para proporcionar appData y setAppData */}
+                { /* Contexto de la APP*/}
                 <AppDataContext.Provider value={{ appData, setAppData }}>
-                    {/* Contexto para manejar el arrastre y la manipulación de tareas y listas */}
+                    { /* Contexto de las funciones de arrastre en las tareas*/}
+
                     <DragDataContext.Provider value={{
                         draggedTaskIndex,
                         setDraggedTaskIndex,
@@ -73,9 +84,9 @@ function App() {
                         activeGhostTask, 
                         setActiveGhostTask
                     }}>
-                        {/* Renderizar el componente que muestra las listas */}
+                        {/* Renderizar el componente las Listas */}
                         <List />
-                        {/* Renderizar el componente para añadir nuevas listas */}
+                        {/* Renderizar el componente AddList para añadir nuevas listas */}
                         <AddList />
                     </DragDataContext.Provider>
                 </AppDataContext.Provider>

@@ -11,6 +11,34 @@
     justify-content: center;
 }
 
+.mt-title{
+    text-align: center;
+    color: #FFF;
+}
+
+.mt-title h1{
+    padding: 40px 0px 0px 0px;
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.mt-button-ResetData {
+    background-color: #1A5D89;
+    border-radius: 5px;
+    padding: 3px 6px;
+    margin-left: 12px;
+    color: #73B0B4;
+}
+
+
+.mt-button-ResetData:hover {
+    cursor: pointer;
+    color: #E4E8ED;
+    background-color: #1A5D89;
+}
+
+
+
 
 
 

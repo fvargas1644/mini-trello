@@ -1,6 +1,6 @@
 import { useState, useRef, useContext } from "react";
-import { AppDataContext } from './AppContext.jsx'; // Contexto para manejar datos de la aplicación
-import taskCrud from "./taskCrud.jsx"; // Función para realizar operaciones CRUD sobre las tareas
+import { AppDataContext } from '../context/AppContext.jsx'; // Contexto para manejar datos de la aplicación
+import taskCrud from "../reducers/taskCrud.jsx"; // Función para realizar operaciones CRUD sobre las tareas
 
 function TaskOptions({ task, listId }) {
 
@@ -65,7 +65,7 @@ function TaskOptions({ task, listId }) {
     const handleMenuOptionsTaskView = () => setMenuOptionsIsVisible(!menuOptionsIsVisible);
 
     // Función para ocultar la tarea (aplicando una clase CSS que la oculta)
-    const hideTask = (event) => event.target.closest('.mt-task-container').classList.add('hide');
+    const hideTask = (event) => event.target.closest('.mt-task-container').classList.add('hideTask');
 
     return (
         <>

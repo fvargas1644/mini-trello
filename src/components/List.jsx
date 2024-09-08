@@ -1,8 +1,8 @@
-import './styles/list.css'
+import '../styles/list.css'
 import React, { useContext } from 'react'
 import ListTitle from './ListTitle.jsx';
 import Task from './Task.jsx';
-import { AppDataContext, DragDataContext } from './AppContext.jsx'
+import { AppDataContext, DragDataContext } from '../context/AppContext.jsx'
 import ListCard from './ListCard.jsx';
 
 function List() {
@@ -14,7 +14,7 @@ function List() {
     const { setDraggedListIndex, setDragItemType } = useContext(DragDataContext);
 
     // Función para ocultar la lista cuando se hace clic en el botón de ocultar
-    const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hide');
+    const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hideList');
 
     // Maneja el inicio del arrastre de una lista
     const handleListDragStart = (event, index) => {

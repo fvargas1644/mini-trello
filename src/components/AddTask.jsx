@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
-import taskCrud from "./taskCrud"
-import { AppDataContext } from './AppContext.jsx'
-import './styles/AddTask.css'
+import taskCrud from "../reducers/taskCrud.jsx"
+import { AppDataContext } from '../context/AppContext.jsx'
+import '../styles/AddTask.css'
 
 // Define el componente funcional AddTask que recibe listId como prop
 function AddTask({ listId }) {

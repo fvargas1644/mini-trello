@@ -1,6 +1,6 @@
-import listCrud from "./listCrud.jsx";
+import listCrud from "../reducers/listCrud.jsx";
 import { useContext } from "react";
-import { AppDataContext, DragDataContext } from './AppContext.jsx';
+import { AppDataContext, DragDataContext } from '../context/AppContext.jsx';
 
 function ListCard({ listId, children, listIndex }) {
 
@@ -20,6 +20,7 @@ function ListCard({ listId, children, listIndex }) {
 
     // Maneja el evento cuando termina la animación de la lista
     const handleListAnimationEnd = async (event) => {
+        console.log(event)
         // Verifica si la animación es la de ocultar la lista
         if (event.animationName === 'list-fade-out') {
             // Realiza una operación de CRUD para ocultar la lista
@@ -67,9 +68,7 @@ function ListCard({ listId, children, listIndex }) {
     // dragleave
 
     // Maneja el evento cuando el ítem es soltado en la lista
-    const handleDrop = async (event) => {
-        event.preventDefault(); // Necesario para permitir el drop
-    };
+    const handleDrop = async (event) => event.preventDefault(); // Necesario para permitir el drop
 
     return (
         <article 
