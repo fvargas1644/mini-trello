@@ -1,6 +1,5 @@
 import './styles/list.css'
-import React, { useState, useContext, useEffect } from 'react'
-import listCrud from './listCrud.jsx'
+import React, { useContext } from 'react'
 import ListTitle from './ListTitle.jsx';
 import Task from './Task.jsx';
 import { AppDataContext, DragDataContext } from './AppContext.jsx'
@@ -8,45 +7,46 @@ import ListCard from './ListCard.jsx';
 
 function List() {
 
+    // Accede al contexto de datos de la aplicación, que contiene la información de las listas
     const { appData } = useContext(AppDataContext);
 
-    // Estado local para manejar el índice del ítem que se está arrastrando
-    const { setDraggedListIndex, setDragItemType} = useContext(DragDataContext);
+    // Accede al contexto de datos de arrastre, que maneja el estado del ítem que se está arrastrando
+    const { setDraggedListIndex, setDragItemType } = useContext(DragDataContext);
 
-    // Función para ocultar la lista, llama a la función proporcionada a través de props
+    // Función para ocultar la lista cuando se hace clic en el botón de ocultar
     const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hide');
-
-   
 
     // Maneja el inicio del arrastre de una lista
     const handleListDragStart = (event, index) => {
-        setDragItemType('list')
-        // Obtiene el elemento padre conainer de list
-        let listContainer = event.target.closest('.mt-list-container')
+        // Establece el tipo de ítem arrastrado como 'list'
+        setDragItemType('list');
 
-        // Usa ese elemeto para crear la imagen arrastrable
-        event.dataTransfer.setDragImage(listContainer, 120, 10)
+        // Obtiene el elemento padre contenedor de la lista
+        let listContainer = event.target.closest('.mt-list-container');
 
-        // Reduce la opacidad del elemento container de list
+        // Crea una imagen arrastrable para representar el ítem arrastrado en el cursor
+        event.dataTransfer.setDragImage(listContainer, 120, 10);
+
+        // Reduce la opacidad del contenedor de la lista durante el arrastre para dar retroalimentación visual
         listContainer.style.opacity = "0.08";
 
         // Actualiza el estado local con el índice de la lista arrastrada
         setDraggedListIndex(index);
 
-        // Permite el movimiento
+        // Permite el movimiento del elemento arrastrado
         event.dataTransfer.effectAllowed = 'move';
     };
 
-
+    // Maneja el evento cuando se termina el arrastre
     const handleListDragEnd = (event) => {
         event.preventDefault(); // Necesario para permitir el drop
 
-        // Restaura la opacidad del elemento container de list
+        // Restaura la opacidad del contenedor de la lista después del arrastre
         event.target.closest('.mt-list-container').style.opacity = "1";
 
         // Resetea el estado del ítem arrastrado
         setDraggedListIndex(null);
-        setDragItemType(null)
+        setDragItemType(null);
     }
 
     return (
@@ -60,10 +60,10 @@ function List() {
                             tasks={list.tasks}
                         >
                             <header
-                                className="mt-list-header" // Clase del contenedor principal
+                                className="mt-list-header" // Clase del contenedor principal para la lista
                                 draggable // Habilita el arrastrar en el contenedor
                                 onDragStart={(event) => handleListDragStart(event, index)} // Maneja el inicio del arrastre
-                                onDragEnd={handleListDragEnd} // Maneja el evento de fin del arrastre
+                                onDragEnd={handleListDragEnd} // Maneja el fin del arrastre
                             >
                                 <ListTitle
                                     listName={list.name}
@@ -81,14 +81,11 @@ function List() {
                                 listIndex={index}
                             />
                         </ListCard>
-
                     </React.Fragment>
                 )
-
             ))}
         </>
     )
-
 }
 
 export default List;

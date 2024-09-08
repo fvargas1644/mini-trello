@@ -1,9 +1,24 @@
+/*--- SECCIONES ---*/
+
 .mt-task-section{
     padding: 12px;
     display: flex;
     gap: 10px;
     flex-direction: column;
 }
+
+.mt-task-sectionOptions {
+    padding: 7px 5px 0px 0px;
+}
+
+
+.mt-list-taskName {
+    padding: 5px;
+    display: block;
+    width: 100%;
+}
+
+/*--- CONTENEDORES ---*/
 
 .mt-task-container {
     background-color: #ee5e87; /*1A114F, 3C5A7E, EC4876,  8F7C95*/
@@ -15,18 +30,19 @@
     justify-content: space-between;
 }
 
+/*OTROS TONOS:
+background-color: #EBE294;
+color: black;
+*/
+
 .mt-task-container.ghost{
     opacity: 0.3;
 }
 
+.mt-task-container.ghost p {
+    padding: 5px 12px;
+}
 
-/*QUIZAS:
-background-color: #FBFBFA; 
-color: black;
-
-background-color: #EBE294;
-color: black;
-*/
 .mt-task-container:hover {
     cursor:grab;
 }
@@ -35,15 +51,33 @@ color: black;
     cursor:grabbing;
 }
 
-.mt-task-container.is-dragging{
-    opacity: 0.8;
+
+
+
+.mt-task-container p {
+    padding: 5px 12px;
 }
 
+/* INPUTS */
 
-.mt-task-sectionOptions {
-    padding: 7px 5px 0px 0px;
+.mt-list-taskName-input{
+    width: 100%;
+    field-sizing: content;
+    padding: 5px 12px;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: rgba(128, 128, 128, 0.6);
+    color: #F0E68C;
+    border-radius: 5px;
 }
 
+.mt-list-taskName-input:focus{
+    box-shadow:  inset 0 0 0 2px #85B8FF;
+}
+
+/* BOTONES */
 
 
 .mt-task-sectionOptions button {
@@ -54,22 +88,13 @@ color: black;
     height: 20px;
 }
 
-.mt-task-sectionOptions button.is-active {
-    background-color: rgba(128, 128, 128, 0.6);
-}
-
 
 .mt-task-sectionOptions button:hover {
-    background-color: rgba(128, 128, 128, 0.6);
+    background-color: #40424447;
     cursor: pointer;
 }
 
-
-
-.mt-task-container p {
-    padding: 8px 8px 8px 15px;
-}
-
+/* MENUS */
 .mt-task-menuOptions{
     position: absolute;
     list-style-type: none;
@@ -78,19 +103,47 @@ color: black;
     border-radius: 6px;
     z-index: 3;
     overflow: hidden; 
-    display: none;
 }
 .mt-task-menuOptions li {
     padding: 8px 10px;
 }
 .mt-task-menuOptions li:hover {
     cursor: pointer;
-    background-color: black;  
+    background-color: #18181847;  
 }
 
-.is-visible {
-    display: block;
+
+
+/* ESTADOS */
+.mt-list-taskName-input.is-hidden {
+    display: none;
 }
+
+.mt-task-menuOptions.is-hidden {
+    display: none;
+}
+
+
+.mt-task-container.is-dragging{
+    opacity: 0.8;
+}
+
+.mt-task-sectionOptions button.is-active {
+    background-color: #40424447;
+}
+
+/*ANIMACIONES*/
+.hide{
+    animation: task-fade-out .5s forwards;
+}
+
+@keyframes task-fade-out {
+    to{
+        display: none;
+        opacity: 0;
+    }
+}
+
 
 
 

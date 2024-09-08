@@ -1,9 +1,8 @@
 import listCrud from "./listCrud.jsx";
 import { useContext } from "react";
 import { AppDataContext, DragDataContext } from './AppContext.jsx';
-import taskCrud from "./taskCrud.jsx";
 
-function ListCard({ listId, children, listIndex, tasks }) {
+function ListCard({ listId, children, listIndex }) {
 
     // Usa el contexto para obtener los datos de la aplicación y la función para actualizarlos
     const { appData, setAppData } = useContext(AppDataContext);
@@ -70,16 +69,6 @@ function ListCard({ listId, children, listIndex, tasks }) {
     // Maneja el evento cuando el ítem es soltado en la lista
     const handleDrop = async (event) => {
         event.preventDefault(); // Necesario para permitir el drop
-
-        // Verifica el tipo de ítem arrastrado y realiza la acción correspondiente
-        if (dragItemType === 'list') {
-            console.log("Termina el drop de list");
-            
-        } else if (dragItemType !== 'list' && listId !== dragTaskData.fromListId) {
-            //console.log("Entramos")
-            // Desactiva la tarea fantasma cuando se suelta
-            //setActiveGhostTask({...activeGhostTask, isDropOtherList: true, toListIndex: listIndex});
-        }
     };
 
     return (

@@ -6,7 +6,7 @@ import { AppDataContext, DragDataContext } from './AppContext.jsx';
 import TaskOptions from "./TaskOptions.jsx";
 
 // Componente que representa una tarea visible en la interfaz
-function RealTask({ task, handleTaskDragStart, handleTaskDragOver, handleTaskDrop, index, handleTaskDragEnd }) {
+function RealTask({ task, handleTaskDragStart, handleTaskAnimationEnd, handleTaskDragOver, handleTaskDrop, index, handleTaskDragEnd, listId }) {
     return (
         <div
             className='mt-task-container'
@@ -15,40 +15,55 @@ function RealTask({ task, handleTaskDragStart, handleTaskDragOver, handleTaskDro
             onDragOver={(event) => handleTaskDragOver(event, index, task.id)} // Maneja el evento cuando el elemento es arrastrado sobre otro
             onDrop={handleTaskDrop} // Maneja el evento cuando se deja caer el elemento
             onDragEnd={handleTaskDragEnd} // Maneja el final del arrastre
+            onAnimationEnd={(event) => handleTaskAnimationEnd(event, task.id)} // Maneja el fin de la animación
             id={task.id}
         >
-            <p>{task.name}</p>{/* Muestra el nombre de la tarea */}
-            <TaskOptions/>
+            {/* Muestra el nombre de la tarea y opciones */}
+            <TaskOptions
+                task={task}
+                listId={listId}
+            />
         </div>
     );
 }
 
-// Componente que representa una tarea "fantasma" (es decir, una vista previa del lugar donde se podría soltar una tarea)
+// Componente que representa una tarea "fantasma" (vista previa del lugar donde se podría soltar una tarea)
 function GhostTask({ task, activeGhostTask, listId, dragTaskData }) {
+    const [ghostTaskName, setGhostTaskName] = useState('Tarea');
 
-    const [ghostTaskName, setGhostTaskName] = useState('Tarea')
-
+    // Actualiza el nombre de la tarea fantasma cuando cambia el estado de la tarea fantasma activa
     useEffect(() => {
         if (activeGhostTask.active) {
-            setGhostTaskName(dragTaskData.task.name)
+            setGhostTaskName(dragTaskData.task.name);
         }
-    }, [activeGhostTask])
+    }, [activeGhostTask]);
 
     // Solo muestra la tarea fantasma si las condiciones son correctas
     if (task.id === -100 && activeGhostTask.listId === listId && activeGhostTask.active) {
         return (
             <div className='mt-task-container ghost'>
-                <p>{ghostTaskName}</p>
+                <div className="mt-list-taskName">
+                    <p>{ghostTaskName}</p>
+                </div>
+                <div className="mt-task-sectionOptions">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 iconOptions">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         );
     }
+
+    return null; // No renderiza nada si las condiciones no se cumplen
 }
 
 // Componente principal que maneja una lista de tareas
 function Task({ listId, listIndex, tasks }) {
+
     // Accede al contexto de datos de la aplicación para obtener y actualizar los datos globales
     const { appData, setAppData } = useContext(AppDataContext);
-
 
     // Accede al contexto de arrastre para obtener y actualizar el estado relacionado con el arrastre
     const {
@@ -79,37 +94,29 @@ function Task({ listId, listIndex, tasks }) {
         setDraggedTask(true); // Marca que una tarea está siendo arrastrada
     };
 
-    // Devuelve el area permitida para el over del drag and drop 
+    // Determina si el área de destino del arrastre está dentro del rango aceptable
     const areaDragOver = async (taskId, event, area) => {
-        let inArea = false
-
-        const dropArea = document.getElementById(taskId)
-
-        // Obtener las coordenadas del área de destino
+        let inArea = false;
+        const dropArea = document.getElementById(taskId);
         const rect = dropArea.getBoundingClientRect();
         const offsetY = event.clientY - rect.top;
-
-        // Obtener la altura del área de drop
         const dropAreaHeight = rect.height;
-
-        // Definir el rango de aceptación de 40px en el centro
         const acceptanceRange = area;
         const rangeStart = (dropAreaHeight - acceptanceRange) / 2;
         const rangeEnd = rangeStart + acceptanceRange;
 
-        // Verificar si la posición está dentro del rango específico
+        // Verifica si la posición está dentro del rango específico
         if (offsetY >= rangeStart && offsetY <= rangeEnd) {
-            //dropArea.style.border = '2px dashed green'; // Estilo para indicar que el drop es aceptado
-            inArea = true
+            inArea = true;
         }
 
-        return inArea
-    }
+        return inArea;
+    };
+
     // Maneja el evento de arrastre sobre una tarea
     const handleTaskDragOver = async (event, taskIndex, taskId) => {
-        
-        // Estimamos el area permitida para el over en la tarea (ontrola un bug al hacer el cambio de posición de las tarea)
-        let inArea = await areaDragOver(taskId, event, 40)
+        // Verifica si el arrastre está dentro del área aceptable
+        let inArea = await areaDragOver(taskId, event, 40);
 
         // Si el Drop es en los 40px del centro de la tarea
         if (inArea) {
@@ -132,7 +139,7 @@ function Task({ listId, listIndex, tasks }) {
                 }
             }
 
-            // Si la tarea fantasma está activo y en la misma lista, mueve la tarea fantasma
+            // Si la tarea fantasma está activa y en la misma lista, mueve la tarea fantasma
             if (activeGhostTask.active === true && listId === activeGhostTask.listId) {
                 let data = await taskCrud(
                     appData,
@@ -145,18 +152,17 @@ function Task({ listId, listIndex, tasks }) {
                 await setAppData(data); // Actualiza los datos de la aplicación
             }
         }
-
     };
 
-    const handleTaskDrop = async (event) => {
-
-        event.preventDefault(); // Previene el comportamiento por defecto del drop
-    }
-
     // Maneja el evento de soltar la tarea
+    const handleTaskDrop = async (event) => {
+        event.preventDefault(); // Previene el comportamiento por defecto del drop
+    };
+
+    // Maneja el final del arrastre
     const handleTaskDragEnd = async (event) => {
         event.target.style.opacity = "1"; // Restaura la opacidad del elemento
-        console.log("Hacemos el drag end")
+
         if (activeGhostTask.active) {
             let data = await taskCrud(
                 appData,
@@ -165,15 +171,29 @@ function Task({ listId, listIndex, tasks }) {
                     fromListIndex: dragTaskData.fromListIndex,
                     toListIndex: activeGhostTask.toListIndex,
                     task: dragTaskData.task,
-                })
-            await setAppData(data)
+                });
+            await setAppData(data); // Actualiza el estado de la aplicación
         }
         setDraggedTask(false); // Marca que el arrastre ha terminado
         setDraggedTaskIndex(null); // Resetea el índice de la tarea arrastrada
-        setDragTaskData(undefined)
-
-
+        setDragTaskData(undefined); // Limpiar los datos del arrastre
         setActiveGhostTask({ active: false, listId: null, isDropOtherList: false, toListIndex: null }); // Desactiva la tarea fantasma
+    };
+
+    // Maneja el evento cuando termina la animación de la lista
+    const handleTaskAnimationEnd = async (event, taskId) => {
+        // Verifica si la animación es la de ocultar la lista
+        if (event.animationName === 'task-fade-out') {
+            // Realiza una operación de CRUD para ocultar la tarea
+            let data = await taskCrud(
+                appData,
+                {
+                    type: 'TOGGLE_TASK_VISIBILITY',
+                    listId,
+                    taskId
+                });
+            await setAppData(data); // Actualiza el estado de la aplicación con la nueva información
+        }
     };
 
     return (
@@ -188,7 +208,9 @@ function Task({ listId, listIndex, tasks }) {
                             handleTaskDragOver={handleTaskDragOver}
                             handleTaskDrop={handleTaskDrop}
                             handleTaskDragEnd={handleTaskDragEnd}
+                            handleTaskAnimationEnd={handleTaskAnimationEnd}
                             index={index}
+                            listId={listId}
                         />
                     ) : (
                         <GhostTask
