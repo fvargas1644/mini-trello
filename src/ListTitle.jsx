@@ -16,10 +16,10 @@ function ListTitle({listName, listId}) {
     const listNameInputRef = useRef(listName);
 
     // Determina las clases CSS del campo de entrada basado en su visibilidad
-    const listNameInputClassName = listNameInputVisible ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hide'
+    const listNameInputClassName = listNameInputVisible ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden'
 
     // Determina la clase CSS del título basado en la visibilidad del campo de entrada
-    const listNameTitleClassName = listNameInputVisible ? 'is-hide' : ''
+    const listNameTitleClassName = listNameInputVisible ? 'is-hidden' : ''
 
 
     // Función para manejar cambios en el campo de entrada, actualiza el estado y llama a la función proporcionada a través de props

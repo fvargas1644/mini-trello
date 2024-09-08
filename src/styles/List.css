@@ -72,12 +72,12 @@
 
 /* ESTADOS */
 
-.is-hide {
+.is-hidden {
     display: none;
 }
 
 /*ANIMACIONES*/
-.hidden{
+.hide{
     animation: list-fade-out .5s forwards;
 }
 

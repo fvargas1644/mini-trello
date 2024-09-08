@@ -6,12 +6,13 @@
 }
 
 .mt-task-container {
-    padding: 8px 14px;
     background-color: #ee5e87; /*1A114F, 3C5A7E, EC4876,  8F7C95*/
     border-radius: var(--border-radius);
     font-size: 14px;
     font-weight: 600;
     color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
 }
 
 .mt-task-container.ghost{
@@ -37,6 +38,63 @@ color: black;
 .mt-task-container.is-dragging{
     opacity: 0.8;
 }
+
+
+.mt-task-sectionOptions {
+    padding: 7px 5px 0px 0px;
+}
+
+
+
+.mt-task-sectionOptions button {
+    background-color:  #ee5e87;
+    border-radius: 50%;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+}
+
+.mt-task-sectionOptions button.is-active {
+    background-color: rgba(128, 128, 128, 0.6);
+}
+
+
+.mt-task-sectionOptions button:hover {
+    background-color: rgba(128, 128, 128, 0.6);
+    cursor: pointer;
+}
+
+
+
+.mt-task-container p {
+    padding: 8px 8px 8px 15px;
+}
+
+.mt-task-menuOptions{
+    position: absolute;
+    list-style-type: none;
+    background-color: #fff;
+    color: gray;
+    border-radius: 6px;
+    z-index: 3;
+    overflow: hidden; 
+    display: none;
+}
+.mt-task-menuOptions li {
+    padding: 8px 10px;
+}
+.mt-task-menuOptions li:hover {
+    cursor: pointer;
+    background-color: black;  
+}
+
+.is-visible {
+    display: block;
+}
+
+
+
+
 
 
 

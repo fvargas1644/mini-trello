@@ -14,7 +14,7 @@ function List() {
     const { setDraggedListIndex, setDragItemType} = useContext(DragDataContext);
 
     // Función para ocultar la lista, llama a la función proporcionada a través de props
-    const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hidden');
+    const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hide');
 
    
 

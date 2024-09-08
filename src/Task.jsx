@@ -3,6 +3,7 @@ import AddTask from "./AddTask.jsx";
 import './styles/Task.css';
 import taskCrud from "./taskCrud.jsx";
 import { AppDataContext, DragDataContext } from './AppContext.jsx';
+import TaskOptions from "./TaskOptions.jsx";
 
 // Componente que representa una tarea visible en la interfaz
 function RealTask({ task, handleTaskDragStart, handleTaskDragOver, handleTaskDrop, index, handleTaskDragEnd }) {
@@ -16,7 +17,8 @@ function RealTask({ task, handleTaskDragStart, handleTaskDragOver, handleTaskDro
             onDragEnd={handleTaskDragEnd} // Maneja el final del arrastre
             id={task.id}
         >
-            {task.name} {/* Muestra el nombre de la tarea */}
+            <p>{task.name}</p>{/* Muestra el nombre de la tarea */}
+            <TaskOptions/>
         </div>
     );
 }
@@ -36,7 +38,7 @@ function GhostTask({ task, activeGhostTask, listId, dragTaskData }) {
     if (task.id === -100 && activeGhostTask.listId === listId && activeGhostTask.active) {
         return (
             <div className='mt-task-container ghost'>
-                {ghostTaskName}
+                <p>{ghostTaskName}</p>
             </div>
         );
     }
