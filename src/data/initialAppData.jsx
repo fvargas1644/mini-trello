@@ -24,7 +24,7 @@ const initialAppData = {
         "name": "Dame Click o Arrastrame",
         "isVisible": true,
         "tasks": [
-          { "id": "127e4567-e89b-12d3-a456-426614174129", "name": "Dame Click o Arrastrame", "isVisible": true }
+          { "id": "12754567-e89b-12d3-a456-426614173456", "name": "Dame Click o Arrastrame", "isVisible": true }
         ]
       }
     ]
