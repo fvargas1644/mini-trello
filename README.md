@@ -1,3 +1,3 @@
 # Mini Trello
 
-Clon con React de la aplicación de Trello con funcionalidades como el Drag and Drop entre listas y tareas, CRUD de listas y tareas.
+Replica de Trello creada con React, que permite gestionar listas y tareas con funcionalidades CRUD y Drag and Drop. Los datos se almacenan de forma local con LocalStorage, garantizando una experiencia continua y sin interrupciones.
