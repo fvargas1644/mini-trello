@@ -44,6 +44,8 @@
     width: 100%;
     cursor: pointer;
     position: relative;
+    word-wrap: break-word; 
+    overflow: auto;
 }
 
 .mt-list-header-listName h3{
