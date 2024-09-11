@@ -73,7 +73,9 @@ function Task({ listId, listIndex, tasks }) {
         dragTaskData,
         setDraggedTask,
         activeGhostTask,
-        setActiveGhostTask
+        setActiveGhostTask,
+        dragItemType,
+        setDragItemType
     } = useContext(DragDataContext);
 
     // Efecto que asegura que siempre haya una tarea fantasma en la lista
@@ -92,6 +94,7 @@ function Task({ listId, listIndex, tasks }) {
         event.dataTransfer.effectAllowed = 'move'; // Permite el movimiento del elemento
         setDraggedTaskIndex(index); // Actualiza el índice de la tarea arrastrada
         setDraggedTask(true); // Marca que una tarea está siendo arrastrada
+        setDragItemType('task') // Actualiza el tipo de item de arrastre a task
     };
 
     // Determina si el área de destino del arrastre está dentro del rango aceptable
@@ -119,7 +122,7 @@ function Task({ listId, listIndex, tasks }) {
         let inArea = await areaDragOver(taskId, event, 40);
 
         // Si el Drop es en los 40px del centro de la tarea
-        if (inArea) {
+        if (inArea && dragItemType === 'task') {
             // Permite el drop en la lista actual solo si el arrastre se origina en la misma lista
             if (listId === dragTaskData.fromListId) {
                 setActiveGhostTask({ active: false, listId: null, index: null }); // Desactiva la tarea fantasma
@@ -178,6 +181,7 @@ function Task({ listId, listIndex, tasks }) {
         setDraggedTaskIndex(null); // Resetea el índice de la tarea arrastrada
         setDragTaskData(undefined); // Limpiar los datos del arrastre
         setActiveGhostTask({ active: false, listId: null, isDropOtherList: false, toListIndex: null }); // Desactiva la tarea fantasma
+        setDragItemType(null) //  Resetea el dato de item arrastrado 
     };
 
     // Maneja el evento cuando termina la animación de la lista
