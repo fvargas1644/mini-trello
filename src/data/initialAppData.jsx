@@ -5,7 +5,7 @@ const initialAppData = {
       "name": "Tareas del proyecto de MiniTrello",
       "isVisible": true,
       "tasks": [
-        { "id": "123e4567-e89b-12d3-a456-426614174001", "name": "Subir nuestra aplicación a la nuve", "isVisible": true },
+        { "id": "123e4567-e89b-12d3-a456-426614174001", "name": "Subir nuestra aplicación a la nube", "isVisible": true },
         { "id": "123e4567-e89b-12d3-a456-426614174002", "name": "Actualizar los datos por defecto de la app", "isVisible": true },
         { "id": "128e4567-e89b-12d3-a456-426614171726", "name": "Crear un artículo relacionado a este proyecto", "isVisible": true }
       ]
