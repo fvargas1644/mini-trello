@@ -6,7 +6,10 @@ function AppTitle({children}){
 
     const {setAppData} = useContext(AppDataContext)
 
-    const handleResetData = () => setAppData(initialAppData)
+    const handleResetData = async () => {
+        await setAppData(initialAppData) // Restaura los datos iniciales de la App
+        window.location.reload(); // Recarga la página para resetear los estados
+    }
 
     return (
         <div className='mt-title'>

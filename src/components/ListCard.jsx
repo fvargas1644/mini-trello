@@ -20,7 +20,6 @@ function ListCard({ listId, children, listIndex }) {
 
     // Maneja el evento cuando termina la animación de la lista
     const handleListAnimationEnd = async (event) => {
-        console.log(event)
         // Verifica si la animación es la de ocultar la lista
         if (event.animationName === 'list-fade-out') {
             // Realiza una operación de CRUD para ocultar la lista
