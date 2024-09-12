@@ -8,14 +8,9 @@ function ListCard({ listId, children, listIndex }) {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // Usa el contexto para manejar el estado relacionado con el arrastre y la interfaz de usuario
-    const {
-        draggedListIndex, 
-        setDraggedListIndex, 
-        dragItemType, 
-        draggedTask, 
-        dragTaskData, 
-        activeGhostTask, 
-        setActiveGhostTask
+    const { 
+        dragData,
+        updateDragData
     } = useContext(DragDataContext);
 
     // Maneja el evento cuando termina la animación de la lista
@@ -33,32 +28,54 @@ function ListCard({ listId, children, listIndex }) {
         event.preventDefault(); // Necesario para permitir que el elemento sea soltado aquí
 
         // Verifica si el ítem arrastrado es una lista
-        if (dragItemType === 'list') {
+        if (dragData.dragItemType === 'list') {
             // Si hay una lista arrastrada y se está pasando sobre una lista diferente
-            if (draggedListIndex !== null && listIndex !== draggedListIndex) {
+            if (dragData.draggedListIndex !== null && listIndex !== dragData.draggedListIndex) {
                 // Realiza una operación de CRUD para mover la lista a una nueva posición
-                let data = await listCrud(appData, { type: 'MOVE_LIST', fromIndex: draggedListIndex, toIndex: listIndex });
+                let data = await listCrud(
+                    appData, { 
+                        type: 'MOVE_LIST', 
+                        fromIndex: dragData.draggedListIndex, 
+                        toIndex: listIndex 
+                    });
                 setAppData(data); // Actualiza el estado de la aplicación
-                // Actualiza el índice de la lista arrastrada
-                setDraggedListIndex(listIndex);
+
+                updateDragData({
+                    draggedListIndex: listIndex // Actualiza el índice de la lista arrastrada
+                })
             }
         } else {
             // Si el ítem arrastrado es una tarea
-            if (draggedTask) {
+            if (dragData.draggedTask) {
                 // Verifica si la tarea se está moviendo entre listas diferentes
-                if (listId !== dragTaskData.fromListId) {
+                if (listId !== dragData.dragTaskData.fromListId) {
                     // Si la tarea fantasma está activo y su lista asociada es diferente, actualiza la lista
-                    if (activeGhostTask.active) {
-                        if (activeGhostTask.listId !== listId) {
-                            setActiveGhostTask({ ...activeGhostTask, listId, toListIndex: listIndex }); 
+                    if (dragData.activeGhostTask.active) {
+                        if (dragData.activeGhostTask.listId !== listId) {
+                            updateDragData({
+                                activeGhostTask: {
+                                    ...dragData.activeGhostTask, 
+                                    listId, 
+                                    toListIndex: listIndex 
+                                }}); 
                         } 
                     } else {
                         // Activa la tarea fantasma con la nueva lista
-                        setActiveGhostTask({ active: true, listId, toListIndex: listIndex });
+                        updateDragData({
+                            activeGhostTask:{
+                                active: true, 
+                                listId, 
+                                toListIndex: listIndex 
+                            }});
                     }
                 } else {
                     // Si la tarea regresa a la misma lista, desactiva la taera fantasma
-                    setActiveGhostTask({ active: false, listId: null });
+                    updateDragData({
+                        activeGhostTask:{ 
+                            active: false, 
+                            listId: null,
+                            toListIndex: null
+                        }});
                 }
             }
         }

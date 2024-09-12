@@ -11,15 +11,18 @@ function List() {
     const { appData } = useContext(AppDataContext);
 
     // Accede al contexto de datos de arrastre, que maneja el estado del ítem que se está arrastrando
-    const { setDraggedListIndex, setDragItemType } = useContext(DragDataContext);
+    const { updateDragData } = useContext(DragDataContext);
 
     // Función para ocultar la lista cuando se hace clic en el botón de ocultar
     const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hideList');
 
     // Maneja el inicio del arrastre de una lista
     const handleListDragStart = (event, index) => {
-        // Establece el tipo de ítem arrastrado como 'list'
-        setDragItemType('list');
+
+        updateDragData({
+            draggedListIndex: index, // Actualiza el estado local con el índice de la lista arrastrada
+            dragItemType: 'list' // Establece el tipo de ítem arrastrado como 'list'
+        })
 
         // Obtiene el elemento padre contenedor de la lista
         let listContainer = event.target.closest('.mt-list-container');
@@ -29,10 +32,7 @@ function List() {
 
         // Reduce la opacidad del contenedor de la lista durante el arrastre para dar retroalimentación visual
         listContainer.style.opacity = "0.08";
-
-        // Actualiza el estado local con el índice de la lista arrastrada
-        setDraggedListIndex(index);
-
+        
         // Permite el movimiento del elemento arrastrado
         event.dataTransfer.effectAllowed = 'move';
     };
@@ -45,8 +45,10 @@ function List() {
         event.target.closest('.mt-list-container').style.opacity = "1";
 
         // Resetea el estado del ítem arrastrado
-        setDraggedListIndex(null);
-        setDragItemType(null);
+        updateDragData({
+            draggedListIndex: null, // Actualiza el estado global con el índice de la lista arrastrada
+            dragItemType: null
+        })
     }
 
     return (

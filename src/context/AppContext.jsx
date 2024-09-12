@@ -46,32 +46,29 @@ export function AppDataProvider ({children}) {
 
 export function DragDataProvider({children}){
 
-    // Estado para indetificar que item se esta arrastrando
-    const [dragItemType, setDragItemType] = useState(null)
+    
+    const [dragData, setDragData] = useState({
+        draggedTaskIndex: null, 
+        dragTaskData: undefined,
+        draggedTask: false,
+        draggedListIndex: null, // Estado global para manejar ítem de lista que se está arrastrando
+        dragItemType: null, // Estado global para indetificar que item se esta arrastrando
+        activeGhostTask: { // Estado global para manejar ítem de tarea que se está arrastrando
+            active: false, 
+            listId: null, 
+            toListIndex: null,
+        }
 
-    // Estado local para manejar ítem de lista que se está arrastrando
-    const [draggedListIndex, setDraggedListIndex] = useState(null);
+    })
 
-    // Estado local para manejar ítem de tarea que se está arrastrando
-    const [dragTaskData, setDragTaskData] = useState(undefined);
-    const [draggedTask, setDraggedTask] = useState(false);
-    const [activeGhostTask, setActiveGhostTask] = useState({ active: false, listId: null, isDropOtherList: false })
-    const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
+    function updateDragData(updates){
+        setDragData(previousData => ({...previousData, ...updates}))
+    }
 
     return (
         <DragDataContext.Provider value={{
-            draggedTaskIndex,
-            setDraggedTaskIndex,
-            dragTaskData,
-            setDragTaskData,
-            draggedTask,
-            setDraggedTask,
-            draggedListIndex,
-            setDraggedListIndex,
-            dragItemType,
-            setDragItemType,
-            activeGhostTask,
-            setActiveGhostTask
+            dragData,
+            updateDragData
         }}>
             {children}
         </DragDataContext.Provider>
