@@ -1,6 +1,7 @@
 // Contexto
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import initialAppData from '../data/initialAppData.jsx';
+import { useAppDataProvider } from '../hooks/useAppDataProvide.jsx';
 
 export const AppDataContext = React.createContext();
 
@@ -8,34 +9,7 @@ export const DragDataContext = React.createContext();
 
 export function AppDataProvider ({children}) {
 
-    // Estado para almacenar los datos de la aplicación
-    const [appData, setAppData] = useState(initialAppData);
-
-    // Estado para manejar actualizaciones que deben reflejarse en el localStorage
-    const [updateLocalStorage, setUpdateLocalStorage] = useState(false);
-
-    // useEffect para cargar datos iniciales al montar el componente
-    useEffect(() => {
-
-        // Verificar si el localStorage tiene datos almacenados
-        if (localStorage.getItem('appData') === null) {
-            // Si no hay datos, se almacenan los datos por defecto
-            localStorage.setItem('appData', JSON.stringify(initialAppData));
-        } else {
-            // Si hay datos en el localStorage, se cargan en el estado de la aplicación
-            setAppData(JSON.parse(localStorage.getItem('appData')));
-        }
-    }, []);
-
-    // useEffect para actualizar el localStorage cuando cambia appData
-    useEffect(() => {
-        if (updateLocalStorage) {
-            // Actualiza el localStorage
-            localStorage.setItem('appData', JSON.stringify(appData));
-        } else {
-            setUpdateLocalStorage(true)
-        }
-    }, [appData]);
+    const {appData, setAppData} = useAppDataProvider({initialAppData})
 
     return (
         <AppDataContext.Provider value={{ appData, setAppData }}>
@@ -46,7 +20,6 @@ export function AppDataProvider ({children}) {
 
 export function DragDataProvider({children}){
 
-    
     const [dragData, setDragData] = useState({
         draggedTaskIndex: null, 
         dragTaskData: undefined,
@@ -58,7 +31,6 @@ export function DragDataProvider({children}){
             listId: null, 
             toListIndex: null,
         }
-
     })
 
     function updateDragData(updates){
