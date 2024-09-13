@@ -1,7 +1,7 @@
 // Contexto
 import React, {  useState } from 'react';
 import initialAppData from '../data/initialAppData.jsx';
-import { useAppDataProvider } from '../hooks/useAppDataProvide.jsx';
+import { useAppDataProvider } from '../hooks/useAppDataProvider.jsx';
 
 export const AppDataContext = React.createContext();
 
