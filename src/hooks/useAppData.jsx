@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useAppDataProvider({initialAppData}){
+export function useAppData({initialAppData}){
     // Estado para almacenar los datos de la aplicación
     const [appData, setAppData] = useState(initialAppData);
 

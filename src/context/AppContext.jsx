@@ -1,7 +1,7 @@
 // Contexto
 import React, {  useState } from 'react';
 import initialAppData from '../data/initialAppData.jsx';
-import { useAppDataProvider } from '../hooks/useAppDataProvider.jsx';
+import { useAppData } from '../hooks/useAppData.jsx';
 
 export const AppDataContext = React.createContext();
 
@@ -9,7 +9,7 @@ export const DragDataContext = React.createContext();
 
 export function AppDataProvider ({children}) {
 
-    const {appData, setAppData} = useAppDataProvider({initialAppData})
+    const {appData, setAppData} = useAppData({initialAppData})
 
     return (
         <AppDataContext.Provider value={{ appData, setAppData }}>
