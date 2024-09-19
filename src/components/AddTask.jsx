@@ -3,28 +3,28 @@ import taskCrud from "../reducers/taskCrud.jsx"
 import { AppDataContext } from '../context/AppContext.jsx'
 import '../styles/AddTask.css'
 
+//hooks
+import { useInputValue } from '../hooks/useInputValue.jsx';
+
 // Define el componente funcional AddTask que recibe listId como prop
 function AddTask({ listId }) {
 
     // Utiliza el hook useContext para obtener y modificar los datos del contexto
     const { appData, setAppData } = useContext(AppDataContext);
 
-    // Define un estado para el valor del input de nueva tarea
-    const [newTaskInputValue, setNewTaskInputValue] = useState('');
-
-    // Maneja los cambios en el campo de entrada de nueva tarea
-    const handleNewTaskInputChange = (event) => setNewTaskInputValue(event.target.value);
+    // customHook para controlar el valor del input
+    const {newInputValue, change, resetInput} = useInputValue('');
 
     // Maneja la adición de una nueva tarea
     const handleAddTask = async () => {
         // Verifica que el campo de entrada no esté vacío
-        if (newTaskInputValue !== '') {
+        if (newInputValue !== '') {
 
             // Llama a la función taskCrud para crear una nueva tarea
-            let data = await taskCrud(appData, { type: 'CREATE_TASK', listId, newTaskName: newTaskInputValue });
+            let data = await taskCrud(appData, { type: 'CREATE_TASK', listId, newTaskName: newInputValue });
 
             // Limpia el valor del input después de agregar la tarea
-            await setNewTaskInputValue('');
+            await resetInput('');
 
             // Actualiza los datos del contexto con los nuevos datos
             setAppData(data);
@@ -36,8 +36,8 @@ function AddTask({ listId }) {
             {/* Campo de entrada para la nueva tarea */}
             <input
                 placeholder='Nueva tarea' // Texto de marcador de posición
-                value={newTaskInputValue} // Valor controlado del input
-                onChange={handleNewTaskInputChange} // Función que maneja los cambios en el input
+                value={newInputValue} // Valor controlado del input
+                onChange={change} // Función que maneja los cambios en el input
             />
             {/* Botón para agregar la nueva tarea */}
             <button className="mt-addTask-buttonAdd" onClick={handleAddTask}>
