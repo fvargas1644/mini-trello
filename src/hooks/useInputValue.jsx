@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-export function useInputValue({inputValue = ''}){
+export function useInputValue({inputValue= ''}){
     // Estado local para almacenar el valor del input
     const [newInputValue, setNewInputValue] = useState(inputValue);
 

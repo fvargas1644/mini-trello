@@ -16,8 +16,8 @@ function AddList() {
     // customHook para controlar la visibilidad de la sección de agregar lista
     const {isVisible, show, hide} = useVisibility(false)
 
-    // customHook para controlar el valor del input
-    const {newInputValue, change, resetInput} = useInputValue('')
+    // customHook para controlar el valor del input que agrega una lista
+    const {newInputValue, change, resetInput} = useInputValue({})
 
     // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
     const addListContainerClassName = isVisible ? 'mt-addList-container is-add' : 'mt-addList-container';

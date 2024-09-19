@@ -12,8 +12,8 @@ function AddTask({ listId }) {
     // Utiliza el hook useContext para obtener y modificar los datos del contexto
     const { appData, setAppData } = useContext(AppDataContext);
 
-    // customHook para controlar el valor del input
-    const {newInputValue, change, resetInput} = useInputValue('');
+    // customHook para controlar el valor del input que agrega una tarea
+    const {newInputValue, change, resetInput} = useInputValue({});
 
     // Maneja la adición de una nueva tarea
     const handleAddTask = async () => {

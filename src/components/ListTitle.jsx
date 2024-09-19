@@ -2,30 +2,34 @@ import { useRef, useState, useContext } from "react";
 import listCrud from "../reducers/listCrud.jsx";
 import { AppDataContext } from '../context/AppContext.jsx';
 
+//hooks
+import { useVisibility } from '../hooks/useVisibility.jsx';
+import { useInputValue } from '../hooks/useInputValue.jsx';
+
 function ListTitle({ listName, listId }) {
 
     // Obtiene los datos de la aplicación y el setter de contexto para actualizar el estado global
     const { appData, setAppData } = useContext(AppDataContext);
 
-    // Estado que controla si el campo de entrada del nombre de la lista está visible o no
-    const [listNameInputVisible, setListNameInputVisible] = useState(false);
+    // customHook para controlar la visibilidad del campo de entrada del nombre de la lista
+    const {isVisible, show, hide} = useVisibility(false)
 
-    // Estado que maneja el valor del nombre de la lista que se está editando
-    const [newListNameInputValue, setNewListNameInputValue] = useState(listName);
+    // customHook para controlar el valor del nombre de la lista que se está editando
+    const {newInputValue, change} = useInputValue({inputValue: listName});
 
     // Referencia al campo de entrada para manipularlo directamente, como seleccionar el texto
     const listNameInputRef = useRef(null);
 
     // Determina las clases CSS para el campo de entrada basado en su visibilidad
-    const listNameInputClassName = listNameInputVisible ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden';
+    const listNameInputClassName = isVisible ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden';
 
     // Determina la clase CSS del título basado en la visibilidad del campo de entrada
-    const listNameTitleClassName = listNameInputVisible ? 'is-hidden' : '';
+    const listNameTitleClassName = isVisible ? 'is-hidden' : '';
 
     // Función para manejar cambios en el campo de entrada
     const handleListNameInputChange = async (event) => {
         // Actualiza el estado con el nuevo valor del campo de entrada
-        setNewListNameInputValue(event.target.value);
+        change(event);
 
         // Realiza una actualización en el contexto global a través de listCrud
         let data = await listCrud(appData, {
@@ -38,8 +42,8 @@ function ListTitle({ listName, listId }) {
 
     // Función para alternar la visibilidad del campo de entrada del nombre de la lista
     async function toggleListNameInput() {
-        if (!listNameInputVisible) {
-            await setListNameInputVisible(true); // Muestra el campo de entrada
+        if (!isVisible) {
+            await show(); // Muestra el campo de entrada
             listNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para edición
         }
     }
@@ -47,12 +51,12 @@ function ListTitle({ listName, listId }) {
     // Función para manejar eventos de teclado en el campo de entrada
     const handleKeyDownListNameInput = (event) => {
         if (event.key === 'Enter' || event.key === 'Escape') {
-            setListNameInputVisible(false); // Oculta el campo de entrada si se presiona Enter o Escape
+            hide(); // Oculta el campo de entrada si se presiona Enter o Escape
         }
     };
 
     // Función para manejar el evento blur en el campo de entrada
-    const handleListNameOnBlur = () => setListNameInputVisible(false);
+    const handleListNameOnBlur = () => hide();
 
     return (
         <div className='mt-list-header-listName' onClick={toggleListNameInput}>
@@ -65,7 +69,7 @@ function ListTitle({ listName, listId }) {
                 onKeyDown={handleKeyDownListNameInput} // Maneja el evento de teclado
                 onBlur={handleListNameOnBlur} // Oculta el campo de entrada cuando se pierde el foco
                 ref={listNameInputRef} // Referencia al campo de entrada
-                value={newListNameInputValue} // Valor actual del campo de entrada
+                value={newInputValue} // Valor actual del campo de entrada
                 onChange={handleListNameInputChange} // Maneja el evento de cambio de valor en el campo de entrada
             ></textarea>
         </div>
