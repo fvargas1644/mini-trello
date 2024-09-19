@@ -12,7 +12,7 @@ function ListTitle({ listName, listId }) {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // customHook para controlar la visibilidad del campo de entrada del nombre de la lista
-    const {isVisible, show, hide} = useVisibility(false)
+    const {isVisible, show, hide} = useVisibility({initialState: false})
 
     // customHook para controlar el valor del nombre de la lista que se está editando
     const {newInputValue, change} = useInputValue({inputValue: listName});

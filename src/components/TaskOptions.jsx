@@ -1,45 +1,50 @@
 import { useState, useRef, useContext } from "react";
-import { AppDataContext } from '../context/AppContext.jsx'; // Contexto para manejar datos de la aplicación
-import taskCrud from "../reducers/taskCrud.jsx"; // Función para realizar operaciones CRUD sobre las tareas
+import { AppDataContext } from '../context/AppContext.jsx'; 
+import taskCrud from "../reducers/taskCrud.jsx"; 
+
+//hooks
+import { useVisibility } from '../hooks/useVisibility.jsx';
+import { useInputValue } from '../hooks/useInputValue.jsx';
+
 
 function TaskOptions({ task, listId }) {
 
     // Obtiene el contexto de datos de la aplicación
     const { appData, setAppData } = useContext(AppDataContext);
 
-    // Estado para controlar la visibilidad del menú de opciones
-    const [menuOptionsIsVisible, setMenuOptionsIsVisible] = useState(false);
-    
-    // Estado para controlar la visibilidad del campo de entrada del nombre de la tarea
-    const [taskNameInputIsVisible, setTaskNameInputIsVisible] = useState(false);
+    // customHook para controlar el valor del nombre de la tarea que se está editando
+    const {newInputValue, change} = useInputValue({inputValue: task.name});
+
+    // customHook para controlar la visibilidad del menú de opciones
+    const isVisibleMenuOptions = useVisibility({initialState: false})
+
+    // customHook para controlar la visibilidad del campo de entrada del nombre de la tarea
+    const isVisibleTaskNameInput = useVisibility({initialState: false})
 
     // Referencia al campo de entrada para manipularlo directamente
     const taskNameInputRef = useRef(task.name);
 
-    // Estado para manejar el valor del nombre de la tarea que se está editando
-    const [newTaskNameInputValue, setNewTaskNameInputValue] = useState(task.name);
-
     // Determina las clases CSS del menú de opciones y del campo de entrada basado en su visibilidad
-    const menuOptionsClassName = menuOptionsIsVisible ? 'mt-task-menuOptions' : 'mt-task-menuOptions is-hidden';
-    const isActiveOptionsTaskButton = menuOptionsIsVisible ? 'is-active' : ''; 
-    const taskNameInputClassName = taskNameInputIsVisible ? 'mt-list-taskName-input' : 'mt-list-taskName-input is-hidden';
-    const taskNameTitleClassName = taskNameInputIsVisible ? 'is-hidden' : '';
+    const menuOptionsClassName = isVisibleMenuOptions.isVisible ? 'mt-task-menuOptions' : 'mt-task-menuOptions is-hidden';
+    const isActiveOptionsTaskButton = isVisibleMenuOptions.isVisible ? 'is-active' : ''; 
+    const taskNameInputClassName = isVisibleTaskNameInput.isVisible ? 'mt-list-taskName-input' : 'mt-list-taskName-input is-hidden';
+    const taskNameTitleClassName = isVisibleTaskNameInput.isVisible ? 'is-hidden' : '';
 
     // Función para alternar la visibilidad del campo de entrada del nombre de la tarea
     async function toggleListNameInput() {
-        if (!taskNameInputIsVisible) {
-            await setTaskNameInputIsVisible(true); // Muestra el campo de entrada
+        if (!isVisibleTaskNameInput.isVisible) {
+            await isVisibleTaskNameInput.show(); // Muestra el campo de entrada
             taskNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para facilitar la edición
         } else {
-            setTaskNameInputIsVisible(false); // Oculta el campo de entrada
+            isVisibleTaskNameInput.hide(); // Oculta el campo de entrada
         }
         
-        setMenuOptionsIsVisible(false); // Oculta el menú de opciones cuando se muestra el campo de entrada
+        isVisibleMenuOptions.hide(); // Oculta el menú de opciones cuando se muestra el campo de entrada
     }
 
     // Función para manejar cambios en el campo de entrada del nombre de la tarea
     const handleTaskNameInputChange = async (event) => {
-        setNewTaskNameInputValue(event.target.value); // Actualiza el estado con el nuevo valor del campo
+        change(event); // Actualiza el estado con el nuevo valor del campo
         let data = await taskCrud(
             appData, ({ 
                 type: 'CHANGE_TASK_NAME', 
@@ -54,15 +59,15 @@ function TaskOptions({ task, listId }) {
     // Función para manejar eventos de teclado en el campo de entrada del nombre de la tarea
     const handleKeyDownTaskNameInput = (event) => {
         if (event.key === 'Enter' || event.key === 'Escape') {
-            setTaskNameInputIsVisible(false); // Oculta el campo de entrada al presionar Enter o Escape
+            isVisibleTaskNameInput.hide(); // Oculta el campo de entrada al presionar Enter o Escape
         }
     };
 
     // Función para manejar el evento blur en el campo de entrada, ocultando el campo de entrada
-    const handleTaskNameOnBlur = () => setTaskNameInputIsVisible(false);
+    const handleTaskNameOnBlur = () => isVisibleTaskNameInput.hide();
 
     // Función para alternar la visibilidad del menú de opciones de la tarea
-    const handleMenuOptionsTaskView = () => setMenuOptionsIsVisible(!menuOptionsIsVisible);
+    const handleMenuOptionsTaskView = () => isVisibleMenuOptions.toggle();
 
     // Función para ocultar la tarea (aplicando una clase CSS que la oculta)
     const hideTask = (event) => event.target.closest('.mt-task-container').classList.add('hideTask');
@@ -78,7 +83,7 @@ function TaskOptions({ task, listId }) {
                 <textarea 
                     className={taskNameInputClassName}
                     ref={taskNameInputRef}
-                    value={newTaskNameInputValue}
+                    value={newInputValue}
                     onKeyDown={handleKeyDownTaskNameInput}
                     onChange={handleTaskNameInputChange}
                     onBlur={handleTaskNameOnBlur}
@@ -95,7 +100,7 @@ function TaskOptions({ task, listId }) {
                     {/* Menú de opciones para editar o eliminar la tarea */}
                     <ul className={menuOptionsClassName}>
                         <li onClick={toggleListNameInput}>
-                            {taskNameInputIsVisible ? 'Actualizar':'Editar'}
+                            {isVisibleTaskNameInput.isVisible ? 'Actualizar':'Editar'}
                         </li>
                         <li onClick={hideTask}>
                             Eliminar
