@@ -1,44 +1,30 @@
 import '../styles/App.css';
-import { useContext } from 'react';
-import listCrud from '../reducers/listCrud.jsx'; 
-import { AppDataContext } from '../context/AppContext.jsx';
 import '../styles/AddList.css'; 
 
-//hooks
+// hooks reutilizables
 import { useVisibility } from '../hooks/useVisibility.jsx';
 import { useInputValue } from '../hooks/useInputValue.jsx';
 
+// hooks para manejar la logica del componente
+import { useAddList } from '../hooks/useAddList.jsx';
+
 
 function AddList() {
-    // Desestructuración del contexto para obtener y actualizar los datos de la aplicación
-    const { appData, setAppData } = useContext(AppDataContext);
-
+    
     // customHook para controlar la visibilidad de la sección de agregar lista
     const isVisibleAddList = useVisibility({initialState: false})
 
     // customHook para controlar el valor del input que agrega una lista
     const inputValueAddList = useInputValue({InitialValue: ''})
 
+    const { AddList } = useAddList({})
+
     // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
     const addListContainerClassName = isVisibleAddList.state ? 'mt-addList-container is-add' : 'mt-addList-container';
     const newListButtonClassName = isVisibleAddList.state ? 'mt-newList-button' : 'mt-newList-button is-add';
 
-
-    // Función para manejar la adición de una nueva lista
-    const handleAddList = async () => {
-        // Verifica que el input no esté vacío antes de agregar la lista
-        if (inputValueAddList.value !== '') {
-            // Llama a la función listCrud para crear una nueva lista y obtiene los datos actualizados
-            let data = await listCrud(appData, { type: 'CREATE_LIST', newListName: inputValueAddList.value });
-
-            // Limpia el valor del input después de agregar la lista
-            await inputValueAddList.resetValue();
-
-            // Actualiza el estado global de la aplicación con los datos actualizados
-            setAppData(data);
-        }
-    };
-
+    const handleAddList = () => AddList(inputValueAddList)
+    
     return (
         <>
             {/* Sección para agregar una nueva lista */}
