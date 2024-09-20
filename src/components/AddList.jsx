@@ -17,7 +17,7 @@ function AddList() {
     const isVisibleAddList = useVisibility({initialState: false})
 
     // customHook para controlar el valor del input que agrega una lista
-    const {newInputValue, change, resetInput} = useInputValue({inputValue: ''})
+    const inputValueAddList = useInputValue({InitialValue: ''})
 
     // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
     const addListContainerClassName = isVisibleAddList.state ? 'mt-addList-container is-add' : 'mt-addList-container';
@@ -27,12 +27,12 @@ function AddList() {
     // Función para manejar la adición de una nueva lista
     const handleAddList = async () => {
         // Verifica que el input no esté vacío antes de agregar la lista
-        if (newInputValue !== '') {
+        if (inputValueAddList.value !== '') {
             // Llama a la función listCrud para crear una nueva lista y obtiene los datos actualizados
-            let data = await listCrud(appData, { type: 'CREATE_LIST', newListName: newInputValue });
+            let data = await listCrud(appData, { type: 'CREATE_LIST', newListName: inputValueAddList.value });
 
             // Limpia el valor del input después de agregar la lista
-            await resetInput();
+            await inputValueAddList.resetValue();
 
             // Actualiza el estado global de la aplicación con los datos actualizados
             setAppData(data);
@@ -47,8 +47,8 @@ function AddList() {
                     <textarea
                         className='mt-addList-header-input'
                         placeholder='Nombre de la lista'
-                        value={newInputValue}
-                        onChange={change}
+                        value={inputValueAddList.value}
+                        onChange={inputValueAddList.onChange}
                     />
                     <button className='mt-addList-header-buttonAdd' onClick={handleAddList}>
                         Add

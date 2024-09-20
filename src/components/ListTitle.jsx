@@ -15,7 +15,7 @@ function ListTitle({ listName, listId }) {
     const isVisibleInputListName = useVisibility({initialState: false})
 
     // customHook para controlar el valor del nombre de la lista que se está editando
-    const {newInputValue, change} = useInputValue({inputValue: listName});
+    const inputValueListName = useInputValue({InitialValue: listName})
 
     // Referencia al campo de entrada para manipularlo directamente, como seleccionar el texto
     const listNameInputRef = useRef(null);
@@ -29,7 +29,7 @@ function ListTitle({ listName, listId }) {
     // Función para manejar cambios en el campo de entrada
     const handleListNameInputChange = async (event) => {
         // Actualiza el estado con el nuevo valor del campo de entrada
-        change(event);
+        inputValueListName.onChange(event)
 
         // Realiza una actualización en el contexto global a través de listCrud
         let data = await listCrud(appData, {
@@ -69,7 +69,7 @@ function ListTitle({ listName, listId }) {
                 onKeyDown={handleKeyDownListNameInput} // Maneja el evento de teclado
                 onBlur={handleListNameOnBlur} // Oculta el campo de entrada cuando se pierde el foco
                 ref={listNameInputRef} // Referencia al campo de entrada
-                value={newInputValue} // Valor actual del campo de entrada
+                value={inputValueListName.value} // Valor actual del campo de entrada
                 onChange={handleListNameInputChange} // Maneja el evento de cambio de valor en el campo de entrada
             ></textarea>
         </div>

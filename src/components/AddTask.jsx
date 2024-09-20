@@ -13,18 +13,18 @@ function AddTask({ listId }) {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // customHook para controlar el valor del input que agrega una tarea
-    const {newInputValue, change, resetInput} = useInputValue({inputValue: ''});
+    const inputValueAddTask = useInputValue({InitialValue: ''})
 
     // Maneja la adición de una nueva tarea
     const handleAddTask = async () => {
         // Verifica que el campo de entrada no esté vacío
-        if (newInputValue !== '') {
+        if (inputValueAddTask.value !== '') {
 
             // Llama a la función taskCrud para crear una nueva tarea
-            let data = await taskCrud(appData, { type: 'CREATE_TASK', listId, newTaskName: newInputValue });
+            let data = await taskCrud(appData, { type: 'CREATE_TASK', listId, newTaskName: inputValueAddTask.value });
 
             // Limpia el valor del input después de agregar la tarea
-            await resetInput('');
+            await inputValueAddTask.resetValue();
 
             // Actualiza los datos del contexto con los nuevos datos
             setAppData(data);
@@ -36,8 +36,8 @@ function AddTask({ listId }) {
             {/* Campo de entrada para la nueva tarea */}
             <input
                 placeholder='Nueva tarea' // Texto de marcador de posición
-                value={newInputValue} // Valor controlado del input
-                onChange={change} // Función que maneja los cambios en el input
+                value={inputValueAddTask.value} // Valor controlado del input
+                onChange={inputValueAddTask.onChange} // Función que maneja los cambios en el input
             />
             {/* Botón para agregar la nueva tarea */}
             <button className="mt-addTask-buttonAdd" onClick={handleAddTask}>

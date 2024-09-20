@@ -13,7 +13,7 @@ function TaskOptions({ task, listId }) {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // customHook para controlar el valor del nombre de la tarea que se está editando
-    const {newInputValue, change} = useInputValue({inputValue: task.name});
+    const inputValueTaskName = useInputValue({InitialValue: task.name});
 
     // customHook para controlar la visibilidad del menú de opciones
     const isVisibleMenuOptions = useVisibility({initialState: false})
@@ -44,7 +44,7 @@ function TaskOptions({ task, listId }) {
 
     // Función para manejar cambios en el campo de entrada del nombre de la tarea
     const handleTaskNameInputChange = async (event) => {
-        change(event); // Actualiza el estado con el nuevo valor del campo
+        inputValueTaskName.onChange(event); // Actualiza el estado con el nuevo valor del campo
         let data = await taskCrud(
             appData, ({ 
                 type: 'CHANGE_TASK_NAME', 
@@ -83,7 +83,7 @@ function TaskOptions({ task, listId }) {
                 <textarea 
                     className={taskNameInputClassName}
                     ref={taskNameInputRef}
-                    value={newInputValue}
+                    value={inputValueTaskName.value}
                     onKeyDown={handleKeyDownTaskNameInput}
                     onChange={handleTaskNameInputChange}
                     onBlur={handleTaskNameOnBlur}

@@ -1,12 +1,12 @@
 import {useState} from 'react'
 
-export function useInputValue({inputValue= ''}){
+export function useInputValue({InitialValue= ''}){
     // Estado local para almacenar el valor del input
-    const [newInputValue, setNewInputValue] = useState(inputValue);
+    const [value, setValue] = useState(InitialValue);
 
     // Función para manejar los cambios en el input de nueva lista
-    const change = (event) => setNewInputValue(event.target.value);
-    const resetInput = () => setNewInputValue('')
+    const onChange = (event) => setValue(event.target.value);
+    const resetValue = () => setValue('')
 
-    return {newInputValue, change, resetInput}
+    return {value, onChange, resetValue}
 }
