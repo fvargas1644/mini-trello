@@ -14,14 +14,14 @@ function AddList() {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // customHook para controlar la visibilidad de la sección de agregar lista
-    const {isVisible, show, hide} = useVisibility({initialState: false})
+    const isVisibleAddList = useVisibility({initialState: false})
 
     // customHook para controlar el valor del input que agrega una lista
     const {newInputValue, change, resetInput} = useInputValue({inputValue: ''})
 
     // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
-    const addListContainerClassName = isVisible ? 'mt-addList-container is-add' : 'mt-addList-container';
-    const newListButtonClassName = isVisible ? 'mt-newList-button' : 'mt-newList-button is-add';
+    const addListContainerClassName = isVisibleAddList.state ? 'mt-addList-container is-add' : 'mt-addList-container';
+    const newListButtonClassName = isVisibleAddList.state ? 'mt-newList-button' : 'mt-newList-button is-add';
 
 
     // Función para manejar la adición de una nueva lista
@@ -54,13 +54,13 @@ function AddList() {
                         Add
                     </button>
                 </header>
-                <button className='mt-addList-header-buttonExit' onClick={hide}>
+                <button className='mt-addList-header-buttonExit' onClick={isVisibleAddList.hide}>
                     X
                 </button>
             </div>
 
             {/* Botón para mostrar la sección de agregar lista */}
-            <button className={newListButtonClassName} onClick={show}>
+            <button className={newListButtonClassName} onClick={isVisibleAddList.show}>
                 Agregar Lista
             </button>
         </>

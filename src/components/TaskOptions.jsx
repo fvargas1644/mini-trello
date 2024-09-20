@@ -25,14 +25,14 @@ function TaskOptions({ task, listId }) {
     const taskNameInputRef = useRef(task.name);
 
     // Determina las clases CSS del menú de opciones y del campo de entrada basado en su visibilidad
-    const menuOptionsClassName = isVisibleMenuOptions.isVisible ? 'mt-task-menuOptions' : 'mt-task-menuOptions is-hidden';
-    const isActiveOptionsTaskButton = isVisibleMenuOptions.isVisible ? 'is-active' : ''; 
-    const taskNameInputClassName = isVisibleTaskNameInput.isVisible ? 'mt-list-taskName-input' : 'mt-list-taskName-input is-hidden';
-    const taskNameTitleClassName = isVisibleTaskNameInput.isVisible ? 'is-hidden' : '';
+    const menuOptionsClassName = isVisibleMenuOptions.state ? 'mt-task-menuOptions' : 'mt-task-menuOptions is-hidden';
+    const isActiveOptionsTaskButton = isVisibleMenuOptions.state ? 'is-active' : ''; 
+    const taskNameInputClassName = isVisibleTaskNameInput.state ? 'mt-list-taskName-input' : 'mt-list-taskName-input is-hidden';
+    const taskNameTitleClassName = isVisibleTaskNameInput.state ? 'is-hidden' : '';
 
     // Función para alternar la visibilidad del campo de entrada del nombre de la tarea
     async function toggleListNameInput() {
-        if (!isVisibleTaskNameInput.isVisible) {
+        if (!isVisibleTaskNameInput.state) {
             await isVisibleTaskNameInput.show(); // Muestra el campo de entrada
             taskNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para facilitar la edición
         } else {
@@ -100,7 +100,7 @@ function TaskOptions({ task, listId }) {
                     {/* Menú de opciones para editar o eliminar la tarea */}
                     <ul className={menuOptionsClassName}>
                         <li onClick={toggleListNameInput}>
-                            {isVisibleTaskNameInput.isVisible ? 'Actualizar':'Editar'}
+                            {isVisibleTaskNameInput.state ? 'Actualizar':'Editar'}
                         </li>
                         <li onClick={hideTask}>
                             Eliminar

@@ -12,7 +12,7 @@ function ListTitle({ listName, listId }) {
     const { appData, setAppData } = useContext(AppDataContext);
 
     // customHook para controlar la visibilidad del campo de entrada del nombre de la lista
-    const {isVisible, show, hide} = useVisibility({initialState: false})
+    const isVisibleInputListName = useVisibility({initialState: false})
 
     // customHook para controlar el valor del nombre de la lista que se está editando
     const {newInputValue, change} = useInputValue({inputValue: listName});
@@ -21,10 +21,10 @@ function ListTitle({ listName, listId }) {
     const listNameInputRef = useRef(null);
 
     // Determina las clases CSS para el campo de entrada basado en su visibilidad
-    const listNameInputClassName = isVisible ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden';
+    const listNameInputClassName = isVisibleInputListName.state ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden';
 
     // Determina la clase CSS del título basado en la visibilidad del campo de entrada
-    const listNameTitleClassName = isVisible ? 'is-hidden' : '';
+    const listNameTitleClassName = isVisibleInputListName.state ? 'is-hidden' : '';
 
     // Función para manejar cambios en el campo de entrada
     const handleListNameInputChange = async (event) => {
@@ -42,8 +42,8 @@ function ListTitle({ listName, listId }) {
 
     // Función para alternar la visibilidad del campo de entrada del nombre de la lista
     async function toggleListNameInput() {
-        if (!isVisible) {
-            await show(); // Muestra el campo de entrada
+        if (!isVisibleInputListName.state) {
+            await isVisibleInputListName.show(); // Muestra el campo de entrada
             listNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para edición
         }
     }
@@ -51,12 +51,12 @@ function ListTitle({ listName, listId }) {
     // Función para manejar eventos de teclado en el campo de entrada
     const handleKeyDownListNameInput = (event) => {
         if (event.key === 'Enter' || event.key === 'Escape') {
-            hide(); // Oculta el campo de entrada si se presiona Enter o Escape
+            isVisibleInputListName.hide(); // Oculta el campo de entrada si se presiona Enter o Escape
         }
     };
 
     // Función para manejar el evento blur en el campo de entrada
-    const handleListNameOnBlur = () => hide();
+    const handleListNameOnBlur = () => isVisibleInputListName.hide();
 
     return (
         <div className='mt-list-header-listName' onClick={toggleListNameInput}>

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 export function useVisibility({initialState = false}) {
-    const [isVisible, setIsVisible] = useState(initialState);
+    const [state, setState] = useState(initialState);
 
-    const show = () => setIsVisible(true);
-    const hide = () => setIsVisible(false);
-    const toggle = () => setIsVisible(prev => !prev);
+    const show = () => setState(true);
+    const hide = () => setState(false);
+    const toggle = () => setState(prev => !prev);
 
-    return {isVisible, show, hide, toggle};
+    return {state, show, hide, toggle};
 }
