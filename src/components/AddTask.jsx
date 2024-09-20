@@ -1,35 +1,21 @@
-import { useState, useContext } from "react"
-import taskCrud from "../reducers/taskCrud.jsx"
-import { AppDataContext } from '../context/AppContext.jsx'
 import '../styles/AddTask.css'
 
-//hooks
+// hooks reutilizables
 import { useInputValue } from '../hooks/useInputValue.jsx';
+
+// hooks para manejar la lógica del componente
+import { useAddTask } from '../hooks/useAddTask.jsx';
 
 // Define el componente funcional AddTask que recibe listId como prop
 function AddTask({ listId }) {
 
-    // Utiliza el hook useContext para obtener y modificar los datos del contexto
-    const { appData, setAppData } = useContext(AppDataContext);
-
+    const { AddTask } = useAddTask()
+    
     // customHook para controlar el valor del input que agrega una tarea
     const inputValueAddTask = useInputValue({InitialValue: ''})
 
     // Maneja la adición de una nueva tarea
-    const handleAddTask = async () => {
-        // Verifica que el campo de entrada no esté vacío
-        if (inputValueAddTask.value !== '') {
-
-            // Llama a la función taskCrud para crear una nueva tarea
-            let data = await taskCrud(appData, { type: 'CREATE_TASK', listId, newTaskName: inputValueAddTask.value });
-
-            // Limpia el valor del input después de agregar la tarea
-            await inputValueAddTask.resetValue();
-
-            // Actualiza los datos del contexto con los nuevos datos
-            setAppData(data);
-        }
-    };
+    const handleAddTask = () => AddTask(inputValueAddTask, listId)
 
     return (
         <div className="mt-addTask-container">

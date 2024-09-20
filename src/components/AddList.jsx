@@ -5,7 +5,7 @@ import '../styles/AddList.css';
 import { useVisibility } from '../hooks/useVisibility.jsx';
 import { useInputValue } from '../hooks/useInputValue.jsx';
 
-// hooks para manejar la logica del componente
+// hooks para manejar la lógica del componente
 import { useAddList } from '../hooks/useAddList.jsx';
 
 
