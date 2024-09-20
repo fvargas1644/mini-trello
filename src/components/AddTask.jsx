@@ -9,13 +9,13 @@ import { useAddTask } from '../hooks/useAddTask.jsx';
 // Define el componente funcional AddTask que recibe listId como prop
 function AddTask({ listId }) {
 
-    const { AddTask } = useAddTask()
+    const { addTask } = useAddTask()
     
     // customHook para controlar el valor del input que agrega una tarea
     const inputValueAddTask = useInputValue({InitialValue: ''})
 
     // Maneja la adición de una nueva tarea
-    const handleAddTask = () => AddTask(inputValueAddTask, listId)
+    const handleAddTask = () => addTask(inputValueAddTask, listId)
 
     return (
         <div className="mt-addTask-container">

@@ -6,7 +6,7 @@ export function useAddTask(){
     // Utiliza el hook useContext para obtener y modificar los datos del contexto
     const { appData, setAppData } = useContext(AppDataContext);
 
-    const AddTask = async (inputValueAddTask, listId) => {
+    const addTask = async (inputValueAddTask, listId) => {
         // Verifica que el campo de entrada no esté vacío
         if (inputValueAddTask.value !== '') {
 
@@ -21,5 +21,5 @@ export function useAddTask(){
         }
     };
 
-    return { AddTask}
+    return { addTask}
 }

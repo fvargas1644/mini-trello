@@ -17,13 +17,13 @@ function AddList() {
     // customHook para controlar el valor del input que agrega una lista
     const inputValueAddList = useInputValue({InitialValue: ''})
 
-    const { AddList } = useAddList({})
+    const { addList } = useAddList({})
 
     // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
     const addListContainerClassName = isVisibleAddList.state ? 'mt-addList-container is-add' : 'mt-addList-container';
     const newListButtonClassName = isVisibleAddList.state ? 'mt-newList-button' : 'mt-newList-button is-add';
 
-    const handleAddList = () => AddList(inputValueAddList)
+    const handleAddList = () => addList(inputValueAddList)
     
     return (
         <>

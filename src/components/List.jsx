@@ -2,54 +2,27 @@ import '../styles/list.css'
 import React, { useContext } from 'react'
 import ListTitle from './ListTitle.jsx';
 import Task from './Task.jsx';
-import { AppDataContext, DragDataContext } from '../context/AppContext.jsx'
+import { AppDataContext } from '../context/AppContext.jsx'
 import ListCard from './ListCard.jsx';
+
+// hooks para manejar la lógica del componente
+import { useList } from '../hooks/useList.jsx';
 
 function List() {
 
     // Accede al contexto de datos de la aplicación, que contiene la información de las listas
     const { appData } = useContext(AppDataContext);
 
-    // Accede al contexto de datos de arrastre, que maneja el estado del ítem que se está arrastrando
-    const { updateDragData } = useContext(DragDataContext);
+    const { listDragStart, listDragEnd } = useList()
 
     // Función para ocultar la lista cuando se hace clic en el botón de ocultar
     const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hideList');
 
     // Maneja el inicio del arrastre de una lista
-    const handleListDragStart = (event, index) => {
-
-        updateDragData({
-            draggedListIndex: index, // Actualiza el estado local con el índice de la lista arrastrada
-            dragItemType: 'list' // Establece el tipo de ítem arrastrado como 'list'
-        })
-
-        // Obtiene el elemento padre contenedor de la lista
-        let listContainer = event.target.closest('.mt-list-container');
-
-        // Crea una imagen arrastrable para representar el ítem arrastrado en el cursor
-        event.dataTransfer.setDragImage(listContainer, 120, 10);
-
-        // Reduce la opacidad del contenedor de la lista durante el arrastre para dar retroalimentación visual
-        listContainer.style.opacity = "0.08";
-        
-        // Permite el movimiento del elemento arrastrado
-        event.dataTransfer.effectAllowed = 'move';
-    };
+    const handleListDragStart = (event, index) => listDragStart(event, index)
 
     // Maneja el evento cuando se termina el arrastre
-    const handleListDragEnd = (event) => {
-        event.preventDefault(); // Necesario para permitir el drop
-
-        // Restaura la opacidad del contenedor de la lista después del arrastre
-        event.target.closest('.mt-list-container').style.opacity = "1";
-
-        // Resetea el estado del ítem arrastrado
-        updateDragData({
-            draggedListIndex: null, // Actualiza el estado global con el índice de la lista arrastrada
-            dragItemType: null
-        })
-    }
+    const handleListDragEnd = (event) => listDragEnd(event)
 
     return (
         <>

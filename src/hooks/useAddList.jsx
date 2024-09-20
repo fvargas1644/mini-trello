@@ -8,7 +8,7 @@ export function useAddList({}){
     const { appData, setAppData } = useContext(AppDataContext);
 
     // Función para manejar la adición de una nueva lista
-    const AddList = async (inputValueAddList) => {
+    const addList = async (inputValueAddList) => {
         // Verifica que el input no esté vacío antes de agregar la lista
         if (inputValueAddList.value !== '') {
             // Llama a la función listCrud para crear una nueva lista y obtiene los datos actualizados
@@ -22,5 +22,5 @@ export function useAddList({}){
         }
     };
 
-    return {AddList}
+    return {addList}
 }
