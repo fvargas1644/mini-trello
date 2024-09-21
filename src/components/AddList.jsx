@@ -18,17 +18,11 @@ function AddList() {
     const inputValueAddList = useInputValue({InitialValue: ''})
 
     const { addList } = useAddList({})
-
-    // Clases CSS dinámicas basadas en el estado de visibilidad de la sección de agregar lista
-    const addListContainerClassName = isVisibleAddList.state ? 'mt-addList-container is-add' : 'mt-addList-container';
-    const newListButtonClassName = isVisibleAddList.state ? 'mt-newList-button' : 'mt-newList-button is-add';
-
-    const handleAddList = () => addList(inputValueAddList)
     
     return (
         <>
             {/* Sección para agregar una nueva lista */}
-            <div className={addListContainerClassName}>
+            <div className={`mt-addList-container ${isVisibleAddList.state ? 'is-add': ''}`}>
                 <header className='mt-addList-header'>
                     <textarea
                         className='mt-addList-header-input'
@@ -36,7 +30,7 @@ function AddList() {
                         value={inputValueAddList.value}
                         onChange={inputValueAddList.onChange}
                     />
-                    <button className='mt-addList-header-buttonAdd' onClick={handleAddList}>
+                    <button className='mt-addList-header-buttonAdd' onClick={() => addList(inputValueAddList)}>
                         Add
                     </button>
                 </header>
@@ -46,7 +40,10 @@ function AddList() {
             </div>
 
             {/* Botón para mostrar la sección de agregar lista */}
-            <button className={newListButtonClassName} onClick={isVisibleAddList.show}>
+            <button 
+                className={`mt-newList-button ${isVisibleAddList.state ? '': 'is-add'}`} 
+                onClick={isVisibleAddList.show}
+            >
                 Agregar Lista
             </button>
         </>

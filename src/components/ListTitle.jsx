@@ -20,12 +20,6 @@ function ListTitle({ listName, listId }) {
     // Referencia al campo de entrada para manipularlo directamente, como seleccionar el texto
     const listNameInputRef = useRef(null);
 
-    // Determina las clases CSS para el campo de entrada basado en su visibilidad
-    const listNameInputClassName = isVisibleInputListName.state ? 'mt-list-header-listName-input' : 'mt-list-header-listName-input is-hidden';
-
-    // Determina la clase CSS del título basado en la visibilidad del campo de entrada
-    const listNameTitleClassName = isVisibleInputListName.state ? 'is-hidden' : '';
-
     // Función para manejar cambios en el campo de entrada
     const handleListNameInputChange = async (event) => {
         // Actualiza el estado con el nuevo valor del campo de entrada
@@ -55,22 +49,18 @@ function ListTitle({ listName, listId }) {
         }
     };
 
-    // Función para manejar el evento blur en el campo de entrada
-    const handleListNameOnBlur = () => isVisibleInputListName.hide();
-
     return (
         <div className='mt-list-header-listName' onClick={toggleListNameInput}>
-            {/* Contenedor para el nombre de la lista */}
-            <h3 className={listNameTitleClassName}>
+            <h3 className={isVisibleInputListName.state ? 'is-hidden': ''}>
                 {listName}
             </h3>
             <textarea
-                className={listNameInputClassName} // Clase del campo de entrada que cambia basado en su visibilidad
+                className={`mt-list-header-listName-input ${isVisibleInputListName.state ? '': 'is-hidden'}`} 
                 onKeyDown={handleKeyDownListNameInput} // Maneja el evento de teclado
-                onBlur={handleListNameOnBlur} // Oculta el campo de entrada cuando se pierde el foco
-                ref={listNameInputRef} // Referencia al campo de entrada
-                value={inputValueListName.value} // Valor actual del campo de entrada
-                onChange={handleListNameInputChange} // Maneja el evento de cambio de valor en el campo de entrada
+                onBlur={() => isVisibleInputListName.hide()} // Oculta el campo de entrada cuando se pierde el foco
+                ref={listNameInputRef} 
+                value={inputValueListName.value} 
+                onChange={handleListNameInputChange} 
             ></textarea>
         </div>
     );

@@ -18,12 +18,6 @@ function List() {
     // Función para ocultar la lista cuando se hace clic en el botón de ocultar
     const hideList = (event) => event.target.closest('.mt-list-container').classList.add('hideList');
 
-    // Maneja el inicio del arrastre de una lista
-    const handleListDragStart = (event, index) => listDragStart(event, index)
-
-    // Maneja el evento cuando se termina el arrastre
-    const handleListDragEnd = (event) => listDragEnd(event)
-
     return (
         <>
             {appData.lists.map((list, index) => (
@@ -37,8 +31,8 @@ function List() {
                             <header
                                 className="mt-list-header" // Clase del contenedor principal para la lista
                                 draggable // Habilita el arrastrar en el contenedor
-                                onDragStart={(event) => handleListDragStart(event, index)} // Maneja el inicio del arrastre
-                                onDragEnd={handleListDragEnd} // Maneja el fin del arrastre
+                                onDragStart={(event) => listDragStart(event, index)} // Maneja el inicio del arrastre
+                                onDragEnd={(event) => listDragEnd(event)} // Maneja el fin del arrastre
                             >
                                 <ListTitle
                                     listName={list.name}
