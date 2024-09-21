@@ -166,11 +166,6 @@ function Task({ listId, listIndex, tasks }) {
         }
     };
 
-    // Maneja el evento de soltar la tarea
-    const handleTaskDrop = async (event) => {
-        event.preventDefault(); // Previene el comportamiento por defecto del drop
-    };
-
     // Maneja el final del arrastre
     const handleTaskDragEnd = async (event) => {
         event.target.style.opacity = "1"; // Restaura la opacidad del elemento
@@ -227,7 +222,7 @@ function Task({ listId, listIndex, tasks }) {
                             task={task}
                             handleTaskDragStart={handleTaskDragStart}
                             handleTaskDragOver={handleTaskDragOver}
-                            handleTaskDrop={handleTaskDrop}
+                            handleTaskDrop={(event) => event.preventDefault()}
                             handleTaskDragEnd={handleTaskDragEnd}
                             handleTaskAnimationEnd={handleTaskAnimationEnd}
                             index={index}
