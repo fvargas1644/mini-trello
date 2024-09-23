@@ -6,10 +6,11 @@ import { AppDataContext } from '../context/AppContext.jsx';
 import { useVisibility } from '../hooks/useVisibility.jsx';
 import { useInputValue } from '../hooks/useInputValue.jsx';
 
+import { useListTitle } from '../hooks/useListTitle.jsx';
+
 function ListTitle({ listName, listId }) {
 
-    // Obtiene los datos de la aplicación y el setter de contexto para actualizar el estado global
-    const { appData, setAppData } = useContext(AppDataContext);
+    const {listNameInputChange, toggleListNameInput, keyDownListNameInput} = useListTitle()
 
     // customHook para controlar la visibilidad del campo de entrada del nombre de la lista
     const isVisibleInputListName = useVisibility({initialState: false})
@@ -20,47 +21,21 @@ function ListTitle({ listName, listId }) {
     // Referencia al campo de entrada para manipularlo directamente, como seleccionar el texto
     const listNameInputRef = useRef(null);
 
-    // Función para manejar cambios en el campo de entrada
-    const handleListNameInputChange = async (event) => {
-        // Actualiza el estado con el nuevo valor del campo de entrada
-        inputValueListName.onChange(event)
-
-        // Realiza una actualización en el contexto global a través de listCrud
-        let data = await listCrud(appData, {
-            type: 'CHANGE_LIST_NAME',
-            id: listId,
-            name: event.target.value
-        });
-        setAppData(data);
-    };
-
-    // Función para alternar la visibilidad del campo de entrada del nombre de la lista
-    async function toggleListNameInput() {
-        if (!isVisibleInputListName.state) {
-            await isVisibleInputListName.show(); // Muestra el campo de entrada
-            listNameInputRef.current.select(); // Selecciona el contenido del campo de entrada para edición
-        }
-    }
-
-    // Función para manejar eventos de teclado en el campo de entrada
-    const handleKeyDownListNameInput = (event) => {
-        if (event.key === 'Enter' || event.key === 'Escape') {
-            isVisibleInputListName.hide(); // Oculta el campo de entrada si se presiona Enter o Escape
-        }
-    };
-
     return (
-        <div className='mt-list-header-listName' onClick={toggleListNameInput}>
+        <div
+            onClick={() => toggleListNameInput(isVisibleInputListName, listNameInputRef)} 
+            className='mt-list-header-listName'
+        >
             <h3 className={isVisibleInputListName.state ? 'is-hidden': ''}>
                 {listName}
             </h3>
             <textarea
                 className={`mt-list-header-listName-input ${isVisibleInputListName.state ? '': 'is-hidden'}`} 
-                onKeyDown={handleKeyDownListNameInput} // Maneja el evento de teclado
+                onKeyDown={(event) => keyDownListNameInput(event, isVisibleInputListName)} // Maneja el evento de teclado
                 onBlur={() => isVisibleInputListName.hide()} // Oculta el campo de entrada cuando se pierde el foco
                 ref={listNameInputRef} 
                 value={inputValueListName.value} 
-                onChange={handleListNameInputChange} 
+                onChange={(event) => listNameInputChange(event, listId, inputValueListName)} 
             ></textarea>
         </div>
     );
