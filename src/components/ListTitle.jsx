@@ -1,11 +1,10 @@
-import { useRef, useState, useContext } from "react";
-import listCrud from "../reducers/listCrud.jsx";
-import { AppDataContext } from '../context/AppContext.jsx';
+import { useRef} from "react";
 
-//hooks
+// hooks reutilizables
 import { useVisibility } from '../hooks/useVisibility.jsx';
 import { useInputValue } from '../hooks/useInputValue.jsx';
 
+// hooks para manejar la lógica del componente
 import { useListTitle } from '../hooks/useListTitle.jsx';
 
 function ListTitle({ listName, listId }) {
