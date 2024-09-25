@@ -3,14 +3,14 @@ import { useListCard } from '../hooks/useListCard.jsx';
 
 function ListCard({ listId, children, listIndex }) {
 
-    const {listAnimationEnd, listDragOver} = useListCard()
+    const {listAnimationEnd, listDragOver} = useListCard({ listId, listIndex })
 
     return (
         <article 
-            onDragOver={(event) => listDragOver(event, listIndex, listId)} // Maneja el evento de arrastre sobre el área
+            onDragOver={(event) => listDragOver(event)} // Maneja el evento de arrastre sobre el área
             onDrop={(event) => event.preventDefault()} // Maneja el evento cuando el ítem es soltado
             className='mt-list-container' // Clase CSS para el estilo del contenedor
-            onAnimationEnd={(event) => listAnimationEnd(event, listId)} // Maneja el fin de la animación
+            onAnimationEnd={(event) => listAnimationEnd(event)} // Maneja el fin de la animación
         >
             {children} {/* Renderiza los elementos secundarios dentro del contenedor */}
         </article>

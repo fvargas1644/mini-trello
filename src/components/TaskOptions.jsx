@@ -9,7 +9,7 @@ import { useTaskOptions } from '../hooks/useTaskOptions.jsx';
 
 function TaskOptions({ task, listId }) {
 
-    const {keyDownTaskNameInput, toggleTaskNameInput, taskNameInputChange} = useTaskOptions()
+    const {keyDownTaskNameInput, toggleTaskNameInput, taskNameInputChange} = useTaskOptions({task, listId})
 
     // customHook para controlar el valor del nombre de la tarea que se está editando
     const inputValueTaskName = useInputValue({InitialValue: task.name});
@@ -43,7 +43,7 @@ function TaskOptions({ task, listId }) {
                     ref={taskNameInputRef}
                     value={inputValueTaskName.value}
                     onKeyDown={(event) => keyDownTaskNameInput(event, isVisibleTaskNameInput)}
-                    onChange={(event) => taskNameInputChange(event, task.id, inputValueTaskName, listId)}
+                    onChange={(event) => taskNameInputChange(event, inputValueTaskName)}
                     onBlur={() => isVisibleTaskNameInput.hide()} // Si el input pierde foco oculta el input 
                 ></textarea>
             </div>

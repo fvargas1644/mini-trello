@@ -2,7 +2,7 @@ import { AppDataContext, DragDataContext } from '../context/AppContext.jsx';
 import { useContext } from 'react';
 import listCrud from "../reducers/listCrud.jsx";
 
-export function useListCard(){
+export function useListCard({listId, listIndex}){
 
     // Usa el contexto para obtener los datos de la aplicación y la función para actualizarlos
     const { appData, setAppData } = useContext(AppDataContext);
@@ -13,7 +13,7 @@ export function useListCard(){
         updateDragData
     } = useContext(DragDataContext);
 
-     const listAnimationEnd = async (event, listId) => {
+     const listAnimationEnd = async (event) => {
         // Verifica si la animación es la de ocultar la lista
         if (event.animationName === 'list-fade-out') {
             // Realiza una operación de CRUD para ocultar la lista
@@ -22,7 +22,7 @@ export function useListCard(){
         }
     };
 
-    const listDragOver = async (event, listIndex, listId) => {
+    const listDragOver = async (event) => {
         event.preventDefault(); // Necesario para permitir que el elemento sea soltado aquí
 
         // Verifica si el ítem arrastrado es una lista

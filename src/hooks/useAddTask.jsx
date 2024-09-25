@@ -2,11 +2,11 @@ import { useContext } from "react"
 import taskCrud from '../reducers/taskCrud.jsx'; 
 import { AppDataContext } from '../context/AppContext.jsx';
 
-export function useAddTask(){
+export function useAddTask({listId}){
     // Utiliza el hook useContext para obtener y modificar los datos del contexto
     const { appData, setAppData } = useContext(AppDataContext);
 
-    const addTask = async (inputValueAddTask, listId) => {
+    const addTask = async (inputValueAddTask) => {
         // Verifica que el campo de entrada no esté vacío
         if (inputValueAddTask.value !== '') {
 

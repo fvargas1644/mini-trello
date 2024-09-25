@@ -9,7 +9,7 @@ import { useListTitle } from '../hooks/useListTitle.jsx';
 
 function ListTitle({ listName, listId }) {
 
-    const {listNameInputChange, toggleListNameInput, keyDownListNameInput} = useListTitle()
+    const {listNameInputChange, toggleListNameInput, keyDownListNameInput} = useListTitle({ listId})
 
     // customHook para controlar la visibilidad del campo de entrada del nombre de la lista
     const isVisibleInputListName = useVisibility({initialState: false})
@@ -34,7 +34,7 @@ function ListTitle({ listName, listId }) {
                 onBlur={() => isVisibleInputListName.hide()} // Oculta el campo de entrada cuando se pierde el foco
                 ref={listNameInputRef} 
                 value={inputValueListName.value} 
-                onChange={(event) => listNameInputChange(event, listId, inputValueListName)} 
+                onChange={(event) => listNameInputChange(event, inputValueListName)} 
             ></textarea>
         </div>
     );

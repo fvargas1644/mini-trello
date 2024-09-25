@@ -2,13 +2,13 @@ import { AppDataContext } from '../context/AppContext.jsx';
 import { useContext } from "react";
 import listCrud from "../reducers/listCrud.jsx";
 
-export function useListTitle(){
+export function useListTitle({ listId}){
 
     // Obtiene los datos de la aplicación y el setter de contexto para actualizar el estado global
     const { appData, setAppData } = useContext(AppDataContext);
 
     // Función para manejar cambios en el campo de entrada
-    const listNameInputChange = async (event, listId, inputValueListName) => {
+    const listNameInputChange = async (event, inputValueListName) => {
         // Actualiza el estado con el nuevo valor del campo de entrada
         inputValueListName.onChange(event)
 

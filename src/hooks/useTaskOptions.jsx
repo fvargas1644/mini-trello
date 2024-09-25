@@ -2,7 +2,7 @@ import { AppDataContext } from '../context/AppContext.jsx';
 import taskCrud from "../reducers/taskCrud.jsx";
 import { useContext } from 'react';
 
-export function useTaskOptions(){
+export function useTaskOptions({task, listId}){
 
     // Obtiene el contexto de datos de la aplicación
     const { appData, setAppData } = useContext(AppDataContext);
@@ -20,13 +20,13 @@ export function useTaskOptions(){
     }
 
     // Función para manejar cambios en el campo de entrada del nombre de la tarea
-    const taskNameInputChange = async (event, taskId, inputValueTaskName, listId) => {
+    const taskNameInputChange = async (event, inputValueTaskName) => {
         inputValueTaskName.onChange(event); // Actualiza el estado con el nuevo valor del campo
         let data = await taskCrud(
             appData, ({ 
                 type: 'CHANGE_TASK_NAME', 
                 listId, 
-                taskId: taskId, 
+                taskId: task.id, 
                 newTaskName: event.target.value
             })
         ); // Llama a la función CRUD para manejar el cambio del nombre
