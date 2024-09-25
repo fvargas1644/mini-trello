@@ -3,6 +3,7 @@ import AddTask from "./AddTask.jsx";
 import '../styles/Task.css';
 import { DragDataContext } from '../context/AppContext.jsx';
 import TaskOptions from "./TaskOptions.jsx";
+import { useGhostTask } from "../hooks/useGhostTask.jsx";
 
 // hooks para manejar la lógica del componente
 import { useTask } from '../hooks/useTask.jsx';
@@ -35,24 +36,14 @@ function RealTask({ task, index, listId, listIndex, tasks }) {
 // Componente que representa una tarea "fantasma" (vista previa del lugar donde se podría soltar una tarea)
 function GhostTask({ task, listId }) {
 
-    // Accede al contexto de arrastre para obtener y actualizar el estado relacionado con el arrastre
-    const { dragData } = useContext(DragDataContext);
-
-    const [ghostTaskName, setGhostTaskName] = useState('Tarea');
-
-    // Actualiza el nombre de la tarea fantasma cuando cambia el estado de la tarea fantasma activa
-    useEffect(() => {
-        if (dragData.activeGhostTask.active) {
-            setGhostTaskName(dragData.dragTaskData.task.name);
-        }
-    }, [dragData.activeGhostTask]);
+    const ghostTask = useGhostTask({task, listId})
 
     // Solo muestra la tarea fantasma si las condiciones son correctas
-    if (task.id === -100 && dragData.activeGhostTask.listId === listId && dragData.activeGhostTask.active) {
+    if (ghostTask.checkChostTask) {
         return (
             <div className='mt-task-container ghost'>
                 <div className="mt-list-taskName">
-                    <p>{ghostTaskName}</p>
+                    <p>{ghostTask.name}</p>
                 </div>
                 <div className="mt-task-sectionOptions">
                     <button>
