@@ -14,7 +14,7 @@ export function useGhostTask({task, listId}){
         }
     }, [dragData.activeGhostTask]);
 
-    const checkChostTask = (task.id === -100 && dragData.activeGhostTask.listId === listId && dragData.activeGhostTask.active) ? true : false
+    const checkGhostTask = (task.id === -100 && dragData.activeGhostTask.listId === listId && dragData.activeGhostTask.active) ? true : false
 
-    return {name, dragData, checkChostTask}
+    return {name, dragData, checkGhostTask}
 }

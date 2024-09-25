@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect } from "react";
 import AddTask from "./AddTask.jsx";
 import '../styles/Task.css';
-import { DragDataContext } from '../context/AppContext.jsx';
 import TaskOptions from "./TaskOptions.jsx";
 import { useGhostTask } from "../hooks/useGhostTask.jsx";
 
@@ -39,7 +38,7 @@ function GhostTask({ task, listId }) {
     const ghostTask = useGhostTask({task, listId})
 
     // Solo muestra la tarea fantasma si las condiciones son correctas
-    if (ghostTask.checkChostTask) {
+    if (ghostTask.checkGhostTask) {
         return (
             <div className='mt-task-container ghost'>
                 <div className="mt-list-taskName">
