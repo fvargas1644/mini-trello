@@ -4,6 +4,7 @@ import { AppDataContext } from '../context/AppContext.jsx';
 
 function AppTitle({children}){
 
+    // Contexto de la aplicación. Recupera los datos de la APP
     const {setAppData} = useContext(AppDataContext)
 
     const handleResetData = async () => {

@@ -10,6 +10,7 @@ import { useTask } from '../hooks/useTask.jsx';
 // Componente que representa una tarea visible en la interfaz
 function RealTask({ task, index, listId, listIndex, tasks }) {
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const { taskDragStart, taskDragOver, taskDragEnd, taskAnimationEnd } = useTask({ listId, listIndex, tasks })
 
     return (

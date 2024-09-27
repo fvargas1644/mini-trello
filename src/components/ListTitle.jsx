@@ -9,6 +9,7 @@ import { useListTitle } from '../hooks/useListTitle.jsx';
 
 function ListTitle({ listName, listId }) {
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const {listNameInputChange, toggleListNameInput, keyDownListNameInput} = useListTitle({ listId})
 
     // customHook para controlar la visibilidad del campo de entrada del nombre de la lista

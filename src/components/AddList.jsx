@@ -8,7 +8,6 @@ import { useInputValue } from '../hooks/useInputValue.jsx';
 // hooks para manejar la lógica del componente
 import { useAddList } from '../hooks/useAddList.jsx';
 
-
 function AddList() {
     
     // customHook para controlar la visibilidad de la sección de agregar lista
@@ -24,6 +23,7 @@ function AddList() {
             {/* Sección para agregar una nueva lista */}
             <div className={`mt-addList-container ${isVisibleAddList.state ? 'is-add': ''}`}>
                 <header className='mt-addList-header'>
+                    {/* Campo de entrada para la nueva lista */}
                     <textarea
                         className='mt-addList-header-input'
                         placeholder='Nombre de la lista'
@@ -34,6 +34,7 @@ function AddList() {
                         Add
                     </button>
                 </header>
+                {/* Botón para transicionar del input a la vista previa */}
                 <button className='mt-addList-header-buttonExit' onClick={isVisibleAddList.hide}>
                     X
                 </button>

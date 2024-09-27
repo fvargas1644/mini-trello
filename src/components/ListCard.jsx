@@ -3,6 +3,7 @@ import { useListCard } from '../hooks/useListCard.jsx';
 
 function ListCard({ listId, children, listIndex }) {
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const {listAnimationEnd, listDragOver} = useListCard({ listId, listIndex })
 
     return (

@@ -9,6 +9,7 @@ import { useTaskOptions } from '../hooks/useTaskOptions.jsx';
 
 function TaskOptions({ task, listId }) {
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const {keyDownTaskNameInput, toggleTaskNameInput, taskNameInputChange} = useTaskOptions({task, listId})
 
     // customHook para controlar el valor del nombre de la tarea que se está editando

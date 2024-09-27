@@ -13,6 +13,7 @@ function List() {
     // Accede al contexto de datos de la aplicación, que contiene la información de las listas
     const { appData } = useContext(AppDataContext);
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const { listDragStart, listDragEnd } = useList()
 
     // Función para ocultar la lista cuando se hace clic en el botón de ocultar
@@ -29,7 +30,7 @@ function List() {
                             tasks={list.tasks}
                         >
                             <header
-                                className="mt-list-header" // Clase del contenedor principal para la lista
+                                className="mt-list-header" 
                                 draggable // Habilita el arrastrar en el contenedor
                                 onDragStart={(event) => listDragStart(event, index)} // Maneja el inicio del arrastre
                                 onDragEnd={(event) => listDragEnd(event)} // Maneja el fin del arrastre
@@ -38,9 +39,10 @@ function List() {
                                     listName={list.name}
                                     listId={list.id}
                                 />
+                                {/* Botón eliminar la lista */}
                                 <button
                                     onClick={hideList} // Maneja el clic en el botón para ocultar la lista
-                                    className="mt-list-button-hideList"> {/* Clase del botón para ocultar */}
+                                    className="mt-list-button-hideList"> 
                                     X
                                 </button>
                             </header>

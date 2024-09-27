@@ -8,6 +8,7 @@ import { useAddTask } from '../hooks/useAddTask.jsx';
 
 function AddTask({ listId }) {
 
+    // Recupera los metodos necesarios para la lógica del customHook del componente
     const { addTask } = useAddTask({listId})
     
     // customHook para controlar el valor del input que agrega una tarea
