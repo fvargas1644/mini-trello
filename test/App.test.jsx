@@ -1,17 +1,26 @@
 import { render, screen } from '@testing-library/react';
 import App from '../src/App';
-import '@testing-library/jest-dom'; // para usar toBeInTheDocument
+import '@testing-library/jest-dom';
+import { beforeEach } from 'vitest';
 
-test('renders the App with title and components', () => {
-  // Renderizar el componente App
-  render(<App />);
+describe('App', ()=>{
 
-  // Verificar si el título "Mini Trello - Drag and Drop" está en el documento
-  expect(screen.getByText('Mini Trello - Drag and Drop')).toBeInTheDocument();
+    let container;
 
-  // Verificar que el componente List se renderizó correctamente
-  //expect(screen.getByRole('list')).toBeInTheDocument(); // Suponiendo que `List` tiene un rol "list"
+    // Renderiza el componente App antes de comenzar los test
+    beforeEach(() =>{
+        const renderResul = render(<App />)
+        container = renderResul.container;
+    })
 
-  // Verificar que el componente AddList se renderizó correctamente
-  //expect(screen.getByRole('button', { name: /add list/i })).toBeInTheDocument(); // Suponiendo que `AddList` tiene un botón "Add List"
+    test('should render the components', () => {
+        
+        // Verificamos si los elementos están en el DOM con querySelector
+        expect(container.querySelector('.mt-title')).toBeInTheDocument();
+        expect(container.querySelector('.mt-list-section')).toBeInTheDocument();
+        expect(container.querySelector('.mt-addList-container')).toBeInTheDocument();
+    })
+
 });
+
+
