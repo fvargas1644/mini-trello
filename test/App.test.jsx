@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import App from '../src/App';
 import '@testing-library/jest-dom';
-import { beforeEach } from 'vitest';
 
 describe('App', ()=>{
 
@@ -9,9 +8,9 @@ describe('App', ()=>{
 
     // Renderiza el componente App antes de comenzar los test
     beforeEach(() =>{
-        const renderResul = render(<App />)
+        const renderResul = render(<App />);
         container = renderResul.container;
-    })
+    });
 
     test('should render the components', () => {
         
@@ -19,7 +18,7 @@ describe('App', ()=>{
         expect(container.querySelector('.mt-title')).toBeInTheDocument();
         expect(container.querySelector('.mt-list-section')).toBeInTheDocument();
         expect(container.querySelector('.mt-addList-container')).toBeInTheDocument();
-    })
+    });
 
 });
 
