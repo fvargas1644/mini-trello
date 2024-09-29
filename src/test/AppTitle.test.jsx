@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import AppTitle from '../src/components/AppTitle';
+import AppTitle from '../components/AppTitle.jsx';
 import '@testing-library/jest-dom';
-import { AppDataContext } from '../src/context/AppContext.jsx';
-import initialAppData from '../src/data/initialAppData.jsx';
+import { AppDataContext } from '../context/AppContext.jsx';
+import initialAppData from '../data/initialAppData.jsx';
 import { expect, test } from 'vitest';
 
 // Simula la función setAppData
