@@ -3,14 +3,13 @@ import { beforeEach, describe, expect, test } from "vitest";
 import AddList from "../components/AddList.jsx";
 import { AppDataContext } from '../context/AppContext.jsx';
 import '@testing-library/jest-dom';
-import initialAppData from "../data/initialAppData.jsx";
 
 
 const setAppDataMock = vi.fn()
 
 const contextValueMock = {
     setAppData: setAppDataMock,
-    appData: initialAppData
+    appData: {lists:[]}
 }
 
 describe('AddList', ()=>{
@@ -29,14 +28,26 @@ describe('AddList', ()=>{
         containerComponent = renderResul.container;
     });
 
-    
+    test('Should be a new list button', ()=>{
+        expect(screen.getByRole('button', {name: /Agregar lista/i})).toBeInTheDocument();
+    });
 
-    test('Should see first the button new list', ()=>{
+    test('Should be a button to add items to the list', ()=>{
+        expect(screen.getByRole('button', {name: /Add/i})).toBeInTheDocument();
+    });
 
-        // Comprobar si la primera vista es el botón de agregar lista 
+    test('Should be a textbox to add items to the list', ()=>{
+        expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+
+    test('Should be a exit button', ()=>{
+        expect(screen.getByRole('button', {name: /X/i})).toBeInTheDocument();
+    });
+
+    test('Should see first the new list button ', ()=>{
+
         expect(screen.getByRole('button', {name: /Agregar lista/i})).toBeInTheDocument();
 
-        // Comprobar si el div que contiene el textarea y botón "Add" no está activo 
         expect(containerComponent.querySelector('.mt-addList-container')).not.toHaveClass('is-add');
     });
 
@@ -66,17 +77,23 @@ describe('AddList', ()=>{
         expect(screen.getByRole('button', {name: /Agregar lista/i})).toHaveClass('is-add');
     });
 
-    test('Should add a list when the Add button is clicked and the text box is not empty', async ()=>{
-
-        await fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Nuevo texto' } }); 
+    test('Should add a list when the Add button is clicked and the text box is not empty', async () => {
+        const newListName = 'Nuevo texto';
         
-        await act( async ()=>{
+        await fireEvent.change(screen.getByRole('textbox'), { target: { value: newListName } });
+        
+        await act(async () => {
             fireEvent.click(screen.getByRole('button', {name: /Add/i}));
-        })
-
+        });
+    
         expect(screen.getByRole('textbox').value).toBe('');
+    
         expect(setAppDataMock).toBeCalled();
-
+    
+        // Verifica que setAppDataMock fue llamado con un objeto appData que tiene la nueva lista
+        expect(setAppDataMock).toHaveBeenCalledWith({
+            lists: expect.arrayContaining([expect.objectContaining({ name: newListName })])
+        });
     });
 
     test('Should not add a list when the Add button is clicked and the text box is empty',async ()=>{
@@ -90,5 +107,4 @@ describe('AddList', ()=>{
         expect(setAppDataMock).not.toBeCalled();
 
     });
-
 });
