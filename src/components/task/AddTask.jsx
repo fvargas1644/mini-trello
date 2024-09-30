@@ -1,10 +1,10 @@
-import '../styles/AddTask.css'
+import '../../styles/AddTask.css'
 
 // hooks reutilizables
-import { useInputValue } from '../hooks/useInputValue.jsx';
+import { useInputValue } from '../../hooks/useInputValue.jsx';
 
 // hooks para manejar la lógica del componente
-import { useAddTask } from '../hooks/useAddTask.jsx';
+import { useAddTask } from '../../hooks/task/useAddTask.jsx';
 
 function AddTask({ listId }) {
 

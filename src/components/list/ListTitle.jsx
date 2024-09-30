@@ -1,11 +1,11 @@
 import { useRef} from "react";
 
 // hooks reutilizables
-import { useVisibility } from '../hooks/useVisibility.jsx';
-import { useInputValue } from '../hooks/useInputValue.jsx';
+import { useVisibility } from '../../hooks/useVisibility.jsx';
+import { useInputValue } from '../../hooks/useInputValue.jsx';
 
 // hooks para manejar la lógica del componente
-import { useListTitle } from '../hooks/useListTitle.jsx';
+import { useListTitle } from '../../hooks/list/useListTitle.jsx';
 
 function ListTitle({ listName, listId }) {
 

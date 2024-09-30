@@ -1,7 +1,7 @@
 import { fireEvent, render, screen,act } from "@testing-library/react";
 import { beforeEach, describe, expect, test } from "vitest";
-import AddList from "../components/AddList.jsx";
-import { AppDataContext } from '../context/AppContext.jsx';
+import AddList from "../../components/list/AddList.jsx";
+import { AppDataContext } from '../../context/AppContext.jsx';
 import '@testing-library/jest-dom';
 
 

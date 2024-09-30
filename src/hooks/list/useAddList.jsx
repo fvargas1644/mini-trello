@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import listCrud from '../reducers/listCrud.jsx'; 
-import { AppDataContext } from '../context/AppContext.jsx';
+import listCrud from '../../reducers/listCrud.jsx'; 
+import { AppDataContext } from '../../context/AppContext.jsx';
 
 export function useAddList({}){
 

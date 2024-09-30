@@ -1,11 +1,11 @@
 import { useRef } from "react";
  
 //hooks
-import { useVisibility } from '../hooks/useVisibility.jsx';
-import { useInputValue } from '../hooks/useInputValue.jsx';
+import { useVisibility } from '../../hooks/useVisibility.jsx';
+import { useInputValue } from '../../hooks/useInputValue.jsx';
 
 // hooks para manejar la lógica del componente
-import { useTaskOptions } from '../hooks/useTaskOptions.jsx';
+import { useTaskOptions } from '../../hooks/task/useTaskOptions.jsx';
 
 function TaskOptions({ task, listId }) {
 

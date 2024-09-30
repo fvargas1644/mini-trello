@@ -1,5 +1,5 @@
-import List from './components/List.jsx';
-import AddList from './components/AddList.jsx';
+import List from './components/list/List.jsx';
+import AddList from './components/list/AddList.jsx';
 import './styles/App.css';
 import { AppDataProvider, DragDataProvider, } from './context/AppContext.jsx';
 import AppTitle from './components/AppTitle.jsx';

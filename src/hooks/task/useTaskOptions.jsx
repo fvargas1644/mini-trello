@@ -1,5 +1,5 @@
-import { AppDataContext } from '../context/AppContext.jsx'; 
-import taskCrud from "../reducers/taskCrud.jsx";
+import { AppDataContext } from '../../context/AppContext.jsx'; 
+import taskCrud from "../../reducers/taskCrud.jsx";
 import { useContext } from 'react';
 
 export function useTaskOptions({task, listId}){

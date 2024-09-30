@@ -1,5 +1,5 @@
 // hooks para manejar la lógica del componente
-import { useListCard } from '../hooks/useListCard.jsx';
+import { useListCard } from '../../hooks/list/useListCard.jsx';
 
 function ListCard({ listId, children, listIndex }) {
 

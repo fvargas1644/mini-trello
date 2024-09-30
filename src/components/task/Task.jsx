@@ -1,11 +1,11 @@
 import React, {  useEffect } from "react";
 import AddTask from "./AddTask.jsx";
-import '../styles/Task.css';
+import '../../styles/Task.css';
 import TaskOptions from "./TaskOptions.jsx";
-import { useGhostTask } from "../hooks/useGhostTask.jsx";
+import { useGhostTask } from "../../hooks/task/useGhostTask.jsx";
 
 // hooks para manejar la lógica del componente
-import { useTask } from '../hooks/useTask.jsx';
+import { useTask } from '../../hooks/task/useTask.jsx';
 
 // Componente que representa una tarea visible en la interfaz
 function RealTask({ task, index, listId, listIndex, tasks }) {

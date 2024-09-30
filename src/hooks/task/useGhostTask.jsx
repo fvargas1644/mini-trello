@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DragDataContext } from '../context/AppContext.jsx';
+import { DragDataContext } from '../../context/AppContext.jsx';
 
 export function useGhostTask({task, listId}){
     // Accede al contexto de arrastre para obtener y actualizar el estado relacionado con el arrastre

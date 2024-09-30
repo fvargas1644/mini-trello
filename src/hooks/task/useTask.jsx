@@ -1,6 +1,6 @@
-import taskCrud from "../reducers/taskCrud.jsx";
+import taskCrud from "../../reducers/taskCrud.jsx";
 import { useContext } from 'react';
-import { AppDataContext, DragDataContext } from '../context/AppContext.jsx';
+import { AppDataContext, DragDataContext } from '../../context/AppContext.jsx';
 
 export function useTask({ listId, listIndex, tasks }) {
     // Accede al contexto de datos de la aplicación para obtener y actualizar los datos globales

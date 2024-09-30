@@ -1,12 +1,12 @@
-import '../styles/App.css';
-import '../styles/AddList.css'; 
+import '../../styles/App.css';
+import '../../styles/AddList.css'; 
 
 // hooks reutilizables
-import { useVisibility } from '../hooks/useVisibility.jsx';
-import { useInputValue } from '../hooks/useInputValue.jsx';
+import { useVisibility } from '../../hooks/useVisibility.jsx';
+import { useInputValue } from '../../hooks/useInputValue.jsx';
 
 // hooks para manejar la lógica del componente
-import { useAddList } from '../hooks/useAddList.jsx';
+import { useAddList } from '../../hooks/list/useAddList.jsx';
 
 function AddList() {
     

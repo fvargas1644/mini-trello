@@ -1,12 +1,12 @@
-import '../styles/list.css'
+import '../../styles//list.css'
 import React, { useContext } from 'react'
 import ListTitle from './ListTitle.jsx';
-import Task from './Task.jsx';
-import { AppDataContext } from '../context/AppContext.jsx'
+import Task from '../task/Task.jsx';
+import { AppDataContext } from '../../context/AppContext.jsx'
 import ListCard from './ListCard.jsx';
 
 // hooks para manejar la lógica del componente
-import { useList } from '../hooks/useList.jsx';
+import { useList } from '../../hooks/list/useList.jsx';
 
 function List() {
 
