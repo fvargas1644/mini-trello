@@ -24,7 +24,7 @@ describe('AddList', ()=>{
             <AppDataContext.Provider value={contextValueMock}>
                 <AddList/>
             </AppDataContext.Provider>
-        )
+        );
         containerComponent = renderResul.container;
     });
 
@@ -75,6 +75,17 @@ describe('AddList', ()=>{
         
         expect(containerComponent.querySelector('.mt-addList-container')).not.toHaveClass('is-add');
         expect(screen.getByRole('button', {name: /Agregar lista/i})).toHaveClass('is-add');
+    });
+
+    test('Should be cleaned the textbox when clicked Add list button', async () => {
+        
+        await fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Nuevo texto' } });
+        
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', {name: /Add/i}));
+        });
+    
+        expect(screen.getByRole('textbox').value).toBe('');
     });
 
     test('Should add a list when the Add button is clicked and the text box is not empty', async () => {
