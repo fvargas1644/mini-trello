@@ -1,6 +1,6 @@
 import { render, screen, fireEvent,act } from "@testing-library/react";
 import { beforeEach, describe, expect, test } from "vitest";
-import AddTask from "../../components/task/AddTask";
+import AddTask from "../../components/task/AddTask.jsx";
 import { AppDataContext } from '../../context/AppContext.jsx';
 
 const setAppDataMock = vi.fn()
