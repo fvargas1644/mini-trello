@@ -55,4 +55,37 @@ describe('ListTitle', ()=>{
     test('Should the list name be the same as the listName prop', ()=>{
         expect(screen.getByRole('heading')).toHaveTextContent(listName);
     });
+
+    test('Should the heading be visible', ()=>{
+        expect(screen.getByRole('heading')).not.toHaveClass('is-hidden');
+    });
+
+    test('Should the textbox be hidden', ()=>{
+        expect(screen.getByRole('textbox')).toHaveClass('is-hidden');
+    });
+
+    test('Should the value in the textbox match the name of the list', async () => {
+        expect(screen.getByRole('textbox')).toHaveValue(listName);
+    });
+
+    test('Should toggle the visibility between the text box and the heading when you click on the container', async () => {
+        await fireEvent.click(containerComponent.querySelector('.mt-list-header-listName'));
+
+        expect(screen.getByRole('textbox')).not.toHaveClass('is-hidden');
+        expect(screen.getByRole('heading')).toHaveClass('is-hidden');
+    });
+
+    test('Should the value of the textbox be the same as the value of the list name when toggling visibility', async () => {
+        await fireEvent.click(containerComponent.querySelector('.mt-list-header-listName'));
+
+        expect(screen.getByRole('textbox')).not.toHaveClass('is-hidden');
+        expect(screen.getByRole('heading')).toHaveClass('is-hidden');
+        expect(screen.getByRole('textbox')).toHaveValue(listName);
+
+    });
+
+    test('Should the user be able to change value textbox',async ()=>{
+        await fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Nuevo texto' } });
+        expect(screen.getByRole('textbox').value).toBe('Nuevo texto');
+    });
 });

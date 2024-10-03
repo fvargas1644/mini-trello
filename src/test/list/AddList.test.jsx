@@ -46,7 +46,7 @@ describe('AddList', ()=>{
 
     test('Should see first the new list button ', ()=>{
 
-        expect(screen.getByRole('button', {name: /Agregar lista/i})).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: /Agregar lista/i})).toHaveClass('is-add');
 
         expect(containerComponent.querySelector('.mt-addList-container')).not.toHaveClass('is-add');
     });
