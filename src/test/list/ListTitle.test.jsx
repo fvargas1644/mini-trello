@@ -88,4 +88,50 @@ describe('ListTitle', ()=>{
         await fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Nuevo texto' } });
         expect(screen.getByRole('textbox').value).toBe('Nuevo texto');
     });
+
+    test('Should update list name when change textbox value',async ()=>{ 
+        let newListName = 'Nuevo nombre de la lista'
+        await act(async () => {
+            fireEvent.change(screen.getByRole('textbox'), { target: { value: newListName } });
+        });
+        expect(screen.getByRole('textbox').value).toBe(newListName);
+        expect(setAppDataMock).toBeCalled();
+        
+        // Verifica que setAppDataMock fue llamado con un objeto appData que tiene la nueva tarea
+        expect(setAppDataMock).toHaveBeenCalledWith({
+            lists:[
+                {
+                    "id": listId,
+                    "name": newListName,
+                    "isVisible": true,
+                    "tasks": [
+                      { "id": "567e4567-e89b-12d3-a456-426614174192", "name": "Terminar informe", "isVisible": true },
+                      { "id": "127e4567-e89b-12d3-a456-426614174129", "name": "Hacer ejercicio después de las 4 PM", "isVisible": true }
+                    ]
+                }
+            ]
+        });
+    });
+
+    test('Should hidden the texbox when press Enter', async ()=>{
+
+        expect(screen.getByRole('textbox')).toHaveClass('is-hidden');
+
+        await fireEvent.click(containerComponent.querySelector('.mt-list-header-listName'));
+        expect(screen.getByRole('textbox')).not.toHaveClass('is-hidden');
+
+        await fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Enter', code: 'Enter' });
+        expect(screen.getByRole('textbox')).toHaveClass('is-hidden');
+    });
+
+    test('Should hidden the texbox when it is blurred', async ()=>{
+
+        expect(screen.getByRole('textbox')).toHaveClass('is-hidden');
+
+        await fireEvent.click(containerComponent.querySelector('.mt-list-header-listName'));
+        expect(screen.getByRole('textbox')).not.toHaveClass('is-hidden');
+        
+        await fireEvent.blur(screen.getByRole('textbox'));
+        expect(screen.getByRole('textbox')).toHaveClass('is-hidden');
+    });
 });
