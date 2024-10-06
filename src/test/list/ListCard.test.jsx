@@ -71,4 +71,8 @@ describe('ListCard', () => {
     test('Should the child be redered', () => {
         expect(screen.getByText('Children')).toBeInTheDocument();
     });
+
+    test('', async ()=>{
+        //await fireEvent.animationEnd(containerComponent.querySelector('.mt-list-container'));
+    });
 });
