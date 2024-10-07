@@ -27,7 +27,7 @@ const appDataContextMock = {
 
 
 const dragDataContextMock = {
-    setAppData: setDragDataMock,
+    updateDragData: setDragDataMock,
     dragData: {
         draggedTaskIndex: null,
         dragTaskData: undefined,
@@ -40,7 +40,6 @@ const dragDataContextMock = {
             toListIndex: null,
         }
     }
-
 }
 
 describe('ListCard', () => {
@@ -74,5 +73,39 @@ describe('ListCard', () => {
 
     test('', async ()=>{
         //await fireEvent.animationEnd(containerComponent.querySelector('.mt-list-container'));
+        //expect(setAppDataMock).toBeCalled();
+    });
+
+    test('', async ()=>{
+
+        let dataDrag = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: 1,
+                dragTaskData: undefined,
+                draggedTask: false,
+                draggedListIndex: null, 
+                dragItemType: 'list', 
+                activeGhostTask: { 
+                    active: false,
+                    listId: null,
+                    toListIndex: null,
+                }
+            }
+        }
+
+        await render(
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dataDrag}>
+                    <ListCard listId={listId} listIndex={listIndex}>
+                        <h1>Children</h1>
+                    </ListCard>
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        );
+
+        await fireEvent.dragOver(containerComponent.querySelector('.mt-list-container'));
+
+        //expect(setDragDataMock).toBeCalled();
     });
 });

@@ -2,18 +2,18 @@ import { AppDataContext, DragDataContext } from '../../context/AppContext.jsx';
 import { useContext } from 'react';
 import listCrud from "../../reducers/listCrud.jsx";
 
-export function useListCard({listId, listIndex}){
+export function useListCard({ listId, listIndex }) {
 
     // Usa el contexto para obtener los datos de la aplicación y la función para actualizarlos
     const { appData, setAppData } = useContext(AppDataContext);
 
     // Usa el contexto para manejar el estado relacionado con el arrastre y la interfaz de usuario
-    const { 
+    const {
         dragData,
         updateDragData
     } = useContext(DragDataContext);
 
-     const listAnimationEnd = async (event) => {
+    const listAnimationEnd = async (event) => {
         // Verifica si la animación es la de ocultar la lista
         if (event.animationName === 'list-fade-out') {
             // Realiza una operación de CRUD para ocultar la lista
@@ -31,11 +31,11 @@ export function useListCard({listId, listIndex}){
             if (dragData.draggedListIndex !== null && listIndex !== dragData.draggedListIndex) {
                 // Realiza una operación de CRUD para mover la lista a una nueva posición
                 let data = await listCrud(
-                    appData, { 
-                        type: 'MOVE_LIST', 
-                        fromIndex: dragData.draggedListIndex, 
-                        toIndex: listIndex 
-                    });
+                    appData, {
+                    type: 'MOVE_LIST',
+                    fromIndex: dragData.draggedListIndex,
+                    toIndex: listIndex
+                });
                 setAppData(data); // Actualiza el estado de la aplicación
 
                 updateDragData({
@@ -52,32 +52,35 @@ export function useListCard({listId, listIndex}){
                         if (dragData.activeGhostTask.listId !== listId) {
                             updateDragData({
                                 activeGhostTask: {
-                                    ...dragData.activeGhostTask, 
-                                    listId, 
-                                    toListIndex: listIndex 
-                                }}); 
-                        } 
+                                    ...dragData.activeGhostTask,
+                                    listId,
+                                    toListIndex: listIndex
+                                }
+                            });
+                        }
                     } else {
                         // Activa la tarea fantasma con la nueva lista
                         updateDragData({
-                            activeGhostTask:{
-                                active: true, 
-                                listId, 
-                                toListIndex: listIndex 
-                            }});
+                            activeGhostTask: {
+                                active: true,
+                                listId,
+                                toListIndex: listIndex
+                            }
+                        });
                     }
                 } else {
                     // Si la tarea regresa a la misma lista, desactiva la taera fantasma
                     updateDragData({
-                        activeGhostTask:{ 
-                            active: false, 
+                        activeGhostTask: {
+                            active: false,
                             listId: null,
                             toListIndex: null
-                        }});
+                        }
+                    });
                 }
             }
         }
     };
 
-    return {listAnimationEnd, listDragOver}
+    return { listAnimationEnd, listDragOver }
 }
