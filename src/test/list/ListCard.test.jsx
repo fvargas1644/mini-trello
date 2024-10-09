@@ -178,4 +178,83 @@ describe('useListCard', () => {
             ]
         });
     });
+
+    test('Should not update list positions when listDragOver is called with draggedListIndex with the value of the current list index', async ()=>{
+
+        // Iniciamos con nuevos datos con el valor de draggedListIndex en 0 que es el valor de la propia lista
+        const dragDataContextMockTest = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: null,
+                dragTaskData: undefined,
+                draggedTask: false,
+                dragItemType: 'list', // Tiene que ser 'list' para permitir el cambio de posición de las listas
+                draggedListIndex: 0, // Es igual a la lista actual que en este caso también es 0
+                activeGhostTask: {
+                    active: false,
+                    listId: null,
+                    toListIndex: null,
+                }
+            }
+        }
+
+        wrapper = ({ children }) =>
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dragDataContextMockTest}>
+                    {children}
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        
+        const { result } = renderHook(() => useListCard({ listId, listIndex }), { wrapper });
+
+        const event = {
+            preventDefault: vi.fn()
+        }
+
+        await act(() => {
+            result.current.listDragOver(event)
+        });
+
+        expect(setAppDataMock).not.toHaveBeenCalledWith()
+    });
+
+
+    test('Should not update list positions when listDragOver is called with draggedListIndex with the value "null"', async ()=>{
+
+        // Iniciamos con nuevos datos con el valor de draggedListIndex een null
+        const dragDataContextMockTest = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: null,
+                dragTaskData: undefined,
+                draggedTask: false,
+                dragItemType: 'list', // Tiene que ser 'list' para permitir el cambio de posición de las listas
+                draggedListIndex: null, 
+                activeGhostTask: {
+                    active: false,
+                    listId: null,
+                    toListIndex: null,
+                }
+            }
+        }
+
+        wrapper = ({ children }) =>
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dragDataContextMockTest}>
+                    {children}
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        
+        const { result } = renderHook(() => useListCard({ listId, listIndex }), { wrapper });
+
+        const event = {
+            preventDefault: vi.fn()
+        }
+
+        await act(() => {
+            result.current.listDragOver(event)
+        });
+
+        expect(setAppDataMock).not.toHaveBeenCalledWith()
+    });
 });
