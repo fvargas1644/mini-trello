@@ -178,9 +178,8 @@ describe('useListCard', () => {
             result.current.listDragOver(event)
         });
 
-        expect(setAppDataMock).not.toHaveBeenCalledWith()
+        expect(setAppDataMock).not.toHaveBeenCalled()
     });
-
 
     test('Should not update list positions when listDragOver is called with draggedListIndex with the value "null"', async ()=>{
 
@@ -218,6 +217,55 @@ describe('useListCard', () => {
             result.current.listDragOver(event)
         });
 
-        expect(setAppDataMock).not.toHaveBeenCalledWith()
+        expect(setAppDataMock).not.toHaveBeenCalled()
+    });
+
+    test('Should change the task another list when listDragOver is called with valid dragData', async ()=>{
+
+        // Iniciamos con nuevos datos de dragData validos para el cambio de tarea a otra lista mediante un drag and drop 
+        const dragDataContextMockTest = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: null,
+                dragTaskData: {
+                    // Deber ser diferente del id de la lista en donde el item arrastrado es soltado (drop) y es la lista de donde proviene el drag(Arrastre)
+                    fromListId: '123e4567-e89b-12d3-a456-426614174000' 
+                }, 
+                draggedTask: true, // Debe estar activo
+                dragItemType: null, 
+                draggedListIndex: null, 
+                activeGhostTask: {
+                    active: true, // Debe estar activo
+                    // Deber ser diferente del id de la lista en donde el item arrastrado es soltado (drop) y es la lista de donde proviene el drag(Arrastre)
+                    listId: '123e4567-e89b-12d3-a456-426614174000' 
+                }
+            }
+        }
+
+        wrapper = ({ children }) =>
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dragDataContextMockTest}>
+                    {children}
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        
+        const { result } = renderHook(() => useListCard({ listId, listIndex }), { wrapper });
+
+        const event = {
+            preventDefault: vi.fn()
+        }
+
+        await act(() => {
+            result.current.listDragOver(event)
+        });
+
+        // Se espera que llame a actualizar los datos de dragData con los datos del la lista en en que fue soltado (drop) el item arrastrado 
+        expect(setDragDataMock).toHaveBeenCalledWith({
+            activeGhostTask: {
+                ...dragDataContextMockTest.dragData.activeGhostTask,
+                listId, // Actualiza con el listId de la lista en donde se suelta (drop) el arrastre
+                toListIndex: listIndex // Actualiza con el listIndex de la lista en donde se suelta (drop) el arrastre
+            }
+        });
     });
 });
