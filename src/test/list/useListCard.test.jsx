@@ -183,7 +183,7 @@ describe('useListCard', () => {
 
     test('Should not update list positions when listDragOver is called with draggedListIndex with the value "null"', async ()=>{
 
-        // Iniciamos con nuevos datos con el valor de draggedListIndex een null
+        // Iniciamos con nuevos datos con el valor de draggedListIndex en null
         const dragDataContextMockTest = {
             updateDragData: setDragDataMock,
             dragData: {
@@ -220,9 +220,61 @@ describe('useListCard', () => {
         expect(setAppDataMock).not.toHaveBeenCalled()
     });
 
-    test('Should change the task another list when listDragOver is called with valid dragData', async ()=>{
+    test('Should activate the ghost task when it is dragged to a different list than the one it came from', async ()=>{
 
-        // Iniciamos con nuevos datos de dragData validos para el cambio de tarea a otra lista mediante un drag and drop 
+        /** 
+         * Iniciamos con nuevos datos de dragData validos para iniciar la tarea fantasma resultante de un drag and drop 
+         * Debe activar la tarea fantasma al arrastrala sobre a una lista diferente de la que procede
+        */
+
+        const dragDataContextMockTest = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: null,
+                dragTaskData: {
+                    // Deber ser diferente del id de la lista de donde proviene la tarea
+                    fromListId: '123e4567-e89b-12d3-a456-426614174000' 
+                }, 
+                draggedTask: true, // Debe estar activo
+                dragItemType: null, 
+                draggedListIndex: null, 
+                activeGhostTask: {}
+            }
+        }
+
+        wrapper = ({ children }) =>
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dragDataContextMockTest}>
+                    {children}
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        
+        const { result } = renderHook(() => useListCard({ listId, listIndex }), { wrapper });
+
+        const event = {
+            preventDefault: vi.fn()
+        }
+
+        await act(() => {
+            result.current.listDragOver(event)
+        });
+
+        // Se espera que llame a actualizar los datos de activeGhostTask con los datos del la lista en donde esta sostenido el arrastre
+        expect(setDragDataMock).toHaveBeenCalledWith({
+            activeGhostTask: {
+                active: true, // Activa la tarea fantasma
+                listId, // Actualiza con el listId de la lista en donde esta sostenido el arrastre
+                toListIndex: listIndex // Actualiza con el listIndex de la lista en donde esta sostenido el arrastre
+            }
+        });
+    });
+
+    test('Should keep the ghost task active when it is dragged to a  different list from the one it came from', async ()=>{
+
+        /**
+         * Iniciamos con nuevos datos de dragData validos para el mantener iniciada la tarea fantasma "activeGhostTask" resultante de el drag and drop
+         * Debe mantener la tarea fantasma activa al arrastrarla a una lista distinta de la que procede
+         * */  
         const dragDataContextMockTest = {
             updateDragData: setDragDataMock,
             dragData: {
@@ -235,8 +287,8 @@ describe('useListCard', () => {
                 dragItemType: null, 
                 draggedListIndex: null, 
                 activeGhostTask: {
-                    active: true, // Debe estar activo
-                    // Deber ser diferente del id de la lista en donde el item arrastrado es soltado (drop) y es la lista de donde proviene el drag(Arrastre)
+                    active: true, // Debe estar activo y es el encargado de crer la tarea fantasma en el componente
+                    // Deber ser diferente del id de la lista de donde proviene la tarea
                     listId: '123e4567-e89b-12d3-a456-426614174000' 
                 }
             }
@@ -259,13 +311,62 @@ describe('useListCard', () => {
             result.current.listDragOver(event)
         });
 
-        // Se espera que llame a actualizar los datos de dragData con los datos del la lista en en que fue soltado (drop) el item arrastrado 
+        // Se espera que llame a actualizar los datos de dragData con los datos del la lista en donde esta sostenido el arrastre
         expect(setDragDataMock).toHaveBeenCalledWith({
             activeGhostTask: {
                 ...dragDataContextMockTest.dragData.activeGhostTask,
-                listId, // Actualiza con el listId de la lista en donde se suelta (drop) el arrastre
-                toListIndex: listIndex // Actualiza con el listIndex de la lista en donde se suelta (drop) el arrastre
+                listId, // Actualiza con el listId de la lista en donde esta sostenido el arrastre
+                toListIndex: listIndex // Actualiza con el listIndex de la lista en donde esta sostenido el arrastre
             }
         });
     });
+
+    test('Should deactivate the ghost task when it is dragged to the same list it came from', async ()=>{
+
+        /**
+         * Iniciamos con nuevos datos de dragData para desactivar la tarea fantasma "activeGhostTask" resultante de el drag and drop
+         * Debería desactivar la tarea fantasma cuando se arrastra a la misma lista de la que procede
+         */
+
+        const dragDataContextMockTest = {
+            updateDragData: setDragDataMock,
+            dragData: {
+                draggedTaskIndex: null,
+                dragTaskData: {
+                    fromListId: listId // lista donde esta siendo arrastrada la tarea, la cual es la misma lista de donde proviene
+                }, 
+                draggedTask: true, // Debe estar activo
+                dragItemType: null, 
+                draggedListIndex: null, 
+                activeGhostTask: undefined
+            }
+        }
+
+        wrapper = ({ children }) =>
+            <AppDataContext.Provider value={appDataContextMock}>
+                <DragDataContext.Provider value={dragDataContextMockTest}>
+                    {children}
+                </DragDataContext.Provider>
+            </AppDataContext.Provider>
+        
+        const { result } = renderHook(() => useListCard({ listId, listIndex }), { wrapper });
+
+        const event = {
+            preventDefault: vi.fn()
+        }
+
+        await act(() => {
+            result.current.listDragOver(event)
+        });
+
+        // Se espera que desctive la tarea fantasma con valores
+        expect(setDragDataMock).toHaveBeenCalledWith({
+            activeGhostTask: {
+                active: false,
+                listId: null, 
+                toListIndex: null 
+            }
+        });
+    });
+
 });
